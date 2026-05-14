@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV - Estilo GitHub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    line-height: 1.5;
+  }
+  .header {
+    background: #010409;
+    border-bottom: 1px solid #30363d;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-logo {
+    color: #fff;
+    font-size: 32px;
+  }
+  .search {
+    flex: 1;
+    max-width: 400px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: #7d8590;
+    font-size: 14px;
+  }
+  .header-actions { margin-left: auto; display: flex; gap: 16px; align-items: center; color: #e6edf3; font-size: 14px; }
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 296px 1fr;
+    gap: 32px;
+  }
+  .sidebar { padding-right: 16px; }
+  .avatar {
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #58a6ff 0%, #7ee787 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    font-weight: 700;
+    color: #0d1117;
+    margin-bottom: 16px;
+    border: 1px solid #30363d;
+  }
+  .name { font-size: 26px; font-weight: 600; line-height: 1.25; color: #e6edf3; }
+  .username { font-size: 20px; color: #7d8590; font-weight: 300; margin-bottom: 16px; }
+  .bio { font-size: 16px; color: #e6edf3; margin-bottom: 16px; }
+  .btn-follow {
+    width: 100%;
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #e6edf3;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: background 0.2s;
+  }
+  .btn-follow:hover { background: #30363d; }
+  .stats-list { font-size: 14px; }
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    color: #7d8590;
+  }
+  .stat-item strong { color: #e6edf3; }
+  .stat-item:hover { color: #58a6ff; cursor: pointer; }
+  .main { min-width: 0; }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 8px 16px;
+    color: #e6edf3;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab.active { border-bottom-color: #fd8c73; font-weight: 600; }
+  .tab .count {
+    background: #30363d;
+    padding: 0 6px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+  .readme {
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    margin-bottom: 16px;
+  }
+  .readme-header {
+    background: #161b22;
+    padding: 8px 16px;
+    border-bottom: 1px solid #30363d;
+    font-size: 14px;
+    color: #7d8590;
+  }
+  .readme-body { padding: 24px; }
+  h1, h2, h3 { color: #e6edf3; }
+  .readme h1 {
+    font-size: 32px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 16px;
+  }
+  .readme h2 {
+    font-size: 24px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #30363d;
+  }
+  .readme h3 { font-size: 20px; margin-top: 16px; margin-bottom: 8px; }
+  .readme p { margin-bottom: 16px; color: #e6edf3; }
+  .readme ul { padding-left: 24px; margin-bottom: 16px; }
+  .readme li { margin-bottom: 4px; }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .badge {
+    background: #1f6feb;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge.green { background: #238636; }
+  .badge.purple { background: #8957e5; }
+  .badge.orange { background: #db6d28; }
+  .badge.red { background: #da3633; }
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    background: #161b22;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #e6edf3;
+  }
+  pre {
+    padding: 16px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+  .repo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .repo {
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .repo-name {
+    color: #2f81f7;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .repo-name:hover { text-decoration: underline; }
+  .repo-desc { font-size: 12px; color: #7d8590; margin-bottom: 16px; }
+  .repo-meta { display: flex; gap: 16px; font-size: 12px; color: #7d8590; }
+  .lang-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .contribution-graph {
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .contribution-grid {
+    display: grid;
+    grid-template-columns: repeat(53, 11px);
+    grid-auto-rows: 11px;
+    gap: 3px;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(7, 11px);
+  }
+  .day {
+    width: 11px; height: 11px;
+    border-radius: 2px;
+    background: #161b22;
+  }
+  .day.l1 { background: #0e4429; }
+  .day.l2 { background: #006d32; }
+  .day.l3 { background: #26a641; }
+  .day.l4 { background: #39d353; }
+  @media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .avatar { width: 200px; height: 200px; font-size: 70px; margin: 0 auto 16px; }
+    .repo-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header class="header">
+    <span class="header-logo">⚙</span>
+    <input class="search" placeholder="Type / to search">
+    <div class="header-actions">
+      <span>Pull requests</span>
+      <span>Issues</span>
+      <span>🔔</span>
+      <span>+</span>
+    </div>
+  </header>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="avatar">EG</div>
+      <div class="name">Ernesto García</div>
+      <div class="username">ernestodev</div>
+      <p class="bio">Full Stack Developer building things on the web. Coffee enthusiast ☕</p>
+      <button class="btn-follow">Follow</button>
+      <div class="stats-list">
+        <div class="stat-item">👥 <strong>1.2k</strong> followers · <strong>284</strong> following</div>
+        <div class="stat-item">⭐ <strong>523</strong> stars</div>
+        <div class="stat-item">🏢 @TechCompany</div>
+        <div class="stat-item">📍 Madrid, España</div>
+        <div class="stat-item">📧 ernesto@ejemplo.com</div>
+        <div class="stat-item">🔗 ernestogarcia.dev</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="tabs">
+        <button class="tab active">📖 Overview</button>
+        <button class="tab">📚 Repositories <span class="count">47</span></button>
+        <button class="tab">📦 Projects <span class="count">12</span></button>
+        <button class="tab">📦 Packages</button>
+        <button class="tab">⭐ Stars <span class="count">523</span></button>
+      </div>
+      <div class="readme">
+        <div class="readme-header">📄 ernestodev / README.md</div>
+        <div class="readme-body">
+          <h1>👋 Hola, soy Ernesto</h1>
+          <div class="badges">
+            <span class="badge">JavaScript</span>
+            <span class="badge purple">TypeScript</span>
+            <span class="badge green">Node.js</span>
+            <span class="badge orange">React</span>
+            <span class="badge red">AWS</span>
+          </div>
+          <p>Soy un desarrollador <strong>full stack</strong> con más de 7 años de experiencia construyendo productos web que la gente disfruta usar. Me apasiona el código limpio, las arquitecturas escalables y aprender algo nuevo cada día.</p>
+
+          <h2>💼 Experiencia laboral</h2>
+          <h3>Senior Frontend Developer @ Tech Company</h3>
+          <p><code>2022 - Presente</code></p>
+          <ul>
+            <li>Liderazgo del equipo frontend (5 personas)</li>
+            <li>Mejora del rendimiento web en un 40%</li>
+            <li>Migración completa a Next.js 14 + TypeScript</li>
+          </ul>
+          <h3>Full Stack Developer @ Startup</h3>
+          <p><code>2019 - 2022</code></p>
+          <ul>
+            <li>Diseño de APIs REST con Node.js + Express</li>
+            <li>Arquitectura serverless en AWS Lambda</li>
+            <li>Integración de pasarelas de pago (Stripe)</li>
+          </ul>
+
+          <h2>🎓 Educación</h2>
+          <ul>
+            <li><strong>Grado en Ingeniería Informática</strong> — Universidad Politécnica (2015-2019)</li>
+            <li><strong>Máster en Cloud Computing</strong> — AWS Academy (2021)</li>
+          </ul>
+
+          <h2>📊 Stats</h2>
+          <pre>const ernesto = {
+  pronouns: "él",
+  code: ["JavaScript", "TypeScript", "Python", "Go"],
+  tools: ["React", "Node.js", "Docker", "AWS"],
+  challenge: "Construir el mejor producto posible",
+  funFact: "Resuelvo bugs hablando con un patito de goma 🦆"
+};</pre>
+        </div>
+      </div>
+      <h2 style="font-size:16px; margin-bottom:8px;">📌 Pinned</h2>
+      <div class="repo-grid">
+        <div class="repo">
+          <div class="repo-name">📚 ecommerce-platform</div>
+          <div class="repo-desc">Plataforma de e-commerce con +10K usuarios activos. Stack moderno con Next.js, PostgreSQL y Stripe.</div>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#3178c6;"></span>TypeScript</span><span>⭐ 234</span><span>🍴 56</span></div>
+        </div>
+        <div class="repo">
+          <div class="repo-name">📚 react-ui-library</div>
+          <div class="repo-desc">Librería de componentes accesibles para React. +500 estrellas, usada en producción.</div>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#f1e05a;"></span>JavaScript</span><span>⭐ 523</span><span>🍴 89</span></div>
+        </div>
+        <div class="repo">
+          <div class="repo-name">📚 api-gateway</div>
+          <div class="repo-desc">API gateway de alto rendimiento con autenticación JWT y rate limiting.</div>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#00ADD8;"></span>Go</span><span>⭐ 142</span><span>🍴 23</span></div>
+        </div>
+        <div class="repo">
+          <div class="repo-name">📚 dashboard-analytics</div>
+          <div class="repo-desc">Dashboard en tiempo real para visualización de datos B2B SaaS.</div>
+          <div class="repo-meta"><span><span class="lang-dot" style="background:#3178c6;"></span>TypeScript</span><span>⭐ 87</span><span>🍴 12</span></div>
+        </div>
+      </div>
+      <div class="contribution-graph">
+        <h3 style="font-size:14px; margin-bottom:12px; font-weight:400; color:#7d8590;">2,847 contributions in the last year</h3>
+        <div class="contribution-grid" id="contribGrid"></div>
+      </div>
+    </main>
+  </div>
+<script>
+  // Generar contribution graph
+  const grid = document.getElementById('contribGrid');
+  for (let i = 0; i < 371; i++) {
+    const day = document.createElement('div');
+    day.className = 'day';
+    const r = Math.random();
+    if (r < 0.3) day.classList.add('');
+    else if (r < 0.55) day.classList.add('l1');
+    else if (r < 0.75) day.classList.add('l2');
+    else if (r < 0.9) day.classList.add('l3');
+    else day.classList.add('l4');
+    grid.appendChild(day);
+  }
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+  // Follow button
+  const followBtn = document.querySelector('.btn-follow');
+  let following = false;
+  followBtn.addEventListener('click', () => {
+    following = !following;
+    followBtn.textContent = following ? '✓ Following' : 'Follow';
+    followBtn.style.background = following ? '#238636' : '#21262d';
+  });
+</script>
+</body>
+</html>

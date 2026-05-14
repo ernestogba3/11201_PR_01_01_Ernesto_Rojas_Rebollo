@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV - Cyberpunk 2077</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --yellow: #fcee0a;
+    --cyan: #00f0ff;
+    --magenta: #ff003c;
+    --pink: #ff2cdf;
+    --bg: #0a0a0a;
+  }
+  body {
+    font-family: 'Rajdhani', 'Orbitron', 'Courier New', monospace;
+    background: var(--bg);
+    color: var(--yellow);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(252,238,10,0.03) 0px, transparent 1px, transparent 3px, rgba(252,238,10,0.03) 4px);
+    pointer-events: none;
+    z-index: 1;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .container {
+    position: relative;
+    z-index: 3;
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--yellow);
+    padding-bottom: 12px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 13px;
+  }
+  .corp-id {
+    color: var(--yellow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .corp-id::before {
+    content: '◆';
+    color: var(--cyan);
+    font-size: 20px;
+  }
+  .system-status {
+    display: flex;
+    gap: 20px;
+    color: var(--cyan);
+  }
+  .status-item { display: flex; align-items: center; gap: 6px; }
+  .status-dot {
+    width: 8px; height: 8px;
+    background: #0f0;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #0f0;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.5; } }
+  .character-screen {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  .character-portrait {
+    border: 2px solid var(--yellow);
+    background: linear-gradient(135deg, rgba(252,238,10,0.1) 0%, rgba(255,0,60,0.1) 100%);
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .character-portrait::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border: 1px solid var(--cyan);
+    pointer-events: none;
+  }
+  .character-portrait::after {
+    content: 'V_PROFILE';
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .portrait-content {
+    text-align: center;
+    color: var(--yellow);
+    text-shadow: 0 0 20px var(--yellow);
+  }
+  .portrait-icon {
+    font-size: 120px;
+    line-height: 1;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 30px var(--yellow));
+  }
+  .portrait-name {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 4px;
+  }
+  .portrait-meta {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation: scan 3s linear infinite;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+  @keyframes scan {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+  .character-info {
+    border: 2px solid var(--yellow);
+    background: rgba(252,238,10,0.03);
+    padding: 24px;
+    position: relative;
+  }
+  .info-tag {
+    position: absolute;
+    top: -12px;
+    left: 16px;
+    background: var(--bg);
+    color: var(--yellow);
+    padding: 0 8px;
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+  h1.glitch {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--yellow);
+    letter-spacing: 4px;
+    margin-bottom: 4px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  h1.glitch::before, h1.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+  }
+  h1.glitch::before { color: var(--magenta); animation: glitchA 3s infinite; clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%); }
+  h1.glitch::after { color: var(--cyan); animation: glitchB 3s infinite; clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%); }
+  @keyframes glitchA {
+    0%, 90%, 100% { transform: translate(0); }
+    93% { transform: translate(-3px, 1px); }
+    96% { transform: translate(2px, -1px); }
+  }
+  @keyframes glitchB {
+    0%, 90%, 100% { transform: translate(0); }
+    93% { transform: translate(2px, -1px); }
+    96% { transform: translate(-3px, 1px); }
+  }
+  .role-tag {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--bg);
+    padding: 4px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .bio {
+    color: #ddd;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(252,238,10,0.05);
+    border-left: 2px solid var(--cyan);
+    font-size: 13px;
+  }
+  .info-row .key { color: var(--cyan); letter-spacing: 1px; text-transform: uppercase; }
+  .info-row .val { color: var(--yellow); }
+  /* Attributes (RPG stats) */
+  .attributes {
+    margin-bottom: 30px;
+    border: 2px solid var(--yellow);
+    padding: 24px;
+    position: relative;
+  }
+  .attr-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  .attr {
+    text-align: center;
+    cursor: pointer;
+    padding: 16px 8px;
+    border: 1px solid rgba(252,238,10,0.3);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .attr:hover {
+    border-color: var(--yellow);
+    background: rgba(252,238,10,0.1);
+    box-shadow: 0 0 20px rgba(252,238,10,0.3);
+  }
+  .attr-icon { font-size: 32px; margin-bottom: 8px; filter: drop-shadow(0 0 8px currentColor); }
+  .attr-name {
+    color: var(--cyan);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .attr-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--yellow);
+    line-height: 1;
+  }
+  .attr-bar {
+    height: 4px;
+    background: rgba(252,238,10,0.2);
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .attr-bar-fill {
+    height: 100%;
+    background: var(--yellow);
+    box-shadow: 0 0 8px var(--yellow);
+    transition: width 1s;
+  }
+  /* Sections */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 20px;
+    border-bottom: 2px solid var(--yellow);
+    padding-bottom: 8px;
+  }
+  .section-tag {
+    background: var(--yellow);
+    color: var(--bg);
+    padding: 4px 12px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+  .section-title {
+    font-size: 24px;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+  }
+  /* Quest list (experience) */
+  .quest {
+    border: 1px solid var(--yellow);
+    margin-bottom: 16px;
+    background: rgba(252,238,10,0.03);
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .quest:hover {
+    background: rgba(252,238,10,0.08);
+    border-color: var(--cyan);
+    transform: translateX(4px);
+  }
+  .quest::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--cyan);
+    transition: width 0.3s;
+  }
+  .quest:hover::before { width: 8px; }
+  .quest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: rgba(0,0,0,0.4);
+  }
+  .quest-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--yellow);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .quest-status {
+    background: rgba(0,255,0,0.2);
+    color: #0f0;
+    padding: 2px 10px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    border: 1px solid #0f0;
+  }
+  .quest-status.completed {
+    background: rgba(252,238,10,0.2);
+    color: var(--yellow);
+    border-color: var(--yellow);
+  }
+  .quest-body {
+    padding: 16px 24px;
+  }
+  .quest-meta {
+    color: var(--cyan);
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .quest-desc {
+    color: #ddd;
+    line-height: 1.6;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  .quest-rewards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(252,238,10,0.3);
+  }
+  .reward {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--cyan);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .reward-icon { color: var(--yellow); }
+  /* Cyberware (skills) */
+  .cyberware-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .cyberware {
+    border: 1px solid var(--yellow);
+    padding: 16px;
+    background: rgba(0,0,0,0.4);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .cyberware:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 15px rgba(0,240,255,0.4);
+    transform: translateY(-2px);
+  }
+  .cyberware-corner {
+    position: absolute;
+    top: 0; right: 0;
+    border-style: solid;
+    border-width: 0 16px 16px 0;
+    border-color: transparent var(--yellow) transparent transparent;
+  }
+  .cyberware-tier {
+    color: var(--cyan);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .cyberware-name {
+    color: var(--yellow);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+  .cyberware-stat {
+    color: #ddd;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .cyberware-bar {
+    height: 3px;
+    background: rgba(252,238,10,0.2);
+    overflow: hidden;
+  }
+  .cyberware-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--yellow));
+    box-shadow: 0 0 6px var(--yellow);
+  }
+  /* Modal */
+  .holo-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 30px;
+  }
+  .holo-overlay.show { display: flex; }
+  .holo {
+    max-width: 600px;
+    width: 100%;
+    border: 2px solid var(--yellow);
+    background: linear-gradient(135deg, rgba(252,238,10,0.05) 0%, rgba(0,240,255,0.05) 100%);
+    padding: 30px;
+    position: relative;
+    color: #ddd;
+  }
+  .holo h3 {
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    font-size: 24px;
+  }
+  .holo .meta { color: var(--cyan); letter-spacing: 2px; margin-bottom: 16px; font-size: 12px; }
+  .holo p { line-height: 1.6; margin-bottom: 8px; }
+  .holo ul { padding-left: 20px; line-height: 1.6; }
+  .holo .close {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: var(--yellow);
+    color: var(--bg);
+    border: none;
+    width: 28px; height: 28px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  /* Contact */
+  .contact-strip {
+    margin-top: 60px;
+    padding: 30px;
+    border: 2px solid var(--yellow);
+    text-align: center;
+    background: rgba(252,238,10,0.05);
+  }
+  .contact-strip h3 {
+    font-size: 28px;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    margin-bottom: 16px;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .contact-item {
+    color: var(--cyan);
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+  .contact-item .label {
+    color: var(--yellow);
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  @media (max-width: 768px) {
+    .character-screen { grid-template-columns: 1fr; }
+    h1.glitch { font-size: 32px; letter-spacing: 2px; }
+    .attr-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <div class="corp-id">NETRUNNER PROFILE // V.2.077</div>
+      <div class="system-status">
+        <span class="status-item"><span class="status-dot"></span>SISTEMA</span>
+        <span class="status-item">⚡ ICE BREAKER</span>
+        <span class="status-item">📡 NIGHT_CITY</span>
+        <span id="bootTime">⏱ 00:00:00</span>
+      </div>
+    </div>
+    <section class="character-screen">
+      <div class="character-portrait">
+        <div class="scan-line"></div>
+        <div class="portrait-content">
+          <div class="portrait-icon">◢◣</div>
+          <div class="portrait-name">EG_77</div>
+          <div class="portrait-meta">// MERC_ID: 1A4F-9C2B</div>
+        </div>
+      </div>
+      <div class="character-info">
+        <span class="info-tag">// PERFIL_BIOMÉTRICO</span>
+        <h1 class="glitch" data-text="ERNESTO_GARCÍA">ERNESTO_GARCÍA</h1>
+        <span class="role-tag">FULL STACK NETRUNNER</span>
+        <p class="bio">Desarrollador full stack mercenario operando en la zona de Night City Madrid. Especialidad en infiltración de frontends complejos y construcción de arquitecturas en la nube. Coffee-driven combat operative.</p>
+        <div class="info-grid">
+          <div class="info-row"><span class="key">Lifepath</span><span class="val">Corpo</span></div>
+          <div class="info-row"><span class="key">Reputación</span><span class="val">★★★★★</span></div>
+          <div class="info-row"><span class="key">Distrito</span><span class="val">Madrid</span></div>
+          <div class="info-row"><span class="key">Edad sistema</span><span class="val">7 años</span></div>
+          <div class="info-row"><span class="key">Eddies</span><span class="val">€$ Disponible</span></div>
+          <div class="info-row"><span class="key">Estado</span><span class="val">⚡ ACTIVO</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="attributes">
+      <span class="info-tag">// STATS_PRINCIPALES</span>
+      <div class="attr-grid">
+        <div class="attr">
+          <div class="attr-icon" style="color:var(--magenta);">⚔</div>
+          <div class="attr-name">Frontend</div>
+          <div class="attr-value">19</div>
+          <div class="attr-bar"><div class="attr-bar-fill" style="width:95%;"></div></div>
+        </div>
+        <div class="attr">
+          <div class="attr-icon" style="color:var(--cyan);">🛡</div>
+          <div class="attr-name">Backend</div>
+          <div class="attr-value">18</div>
+          <div class="attr-bar"><div class="attr-bar-fill" style="width:88%;"></div></div>
+        </div>
+        <div class="attr">
+          <div class="attr-icon" style="color:var(--yellow);">🧠</div>
+          <div class="attr-name">Reflejos</div>
+          <div class="attr-value">17</div>
+          <div class="attr-bar"><div class="attr-bar-fill" style="width:85%;"></div></div>
+        </div>
+        <div class="attr">
+          <div class="attr-icon" style="color:#0f0;">⚡</div>
+          <div class="attr-name">Tech</div>
+          <div class="attr-value">16</div>
+          <div class="attr-bar"><div class="attr-bar-fill" style="width:80%;"></div></div>
+        </div>
+        <div class="attr">
+          <div class="attr-icon" style="color:var(--pink);">💾</div>
+          <div class="attr-name">Inteligencia</div>
+          <div class="attr-value">18</div>
+          <div class="attr-bar"><div class="attr-bar-fill" style="width:90%;"></div></div>
+        </div>
+      </div>
+    </section>
+    <div class="section-header">
+      <span class="section-tag">DIARIO</span>
+      <h2 class="section-title">Misiones Principales</h2>
+    </div>
+    <div class="quest" onclick="showQuest('q1')">
+      <div class="quest-header">
+        <span class="quest-title">Senior Frontend Operative</span>
+        <span class="quest-status">EN CURSO</span>
+      </div>
+      <div class="quest-body">
+        <div class="quest-meta">// TECH COMPANY S.L. · 2022 — PRESENTE · MADRID</div>
+        <p class="quest-desc">Operativo de élite liderando un equipo de 5 netrunners en la migración de sistemas legacy. Stack moderno: React, Next.js 14, TypeScript.</p>
+        <div class="quest-rewards">
+          <span class="reward"><span class="reward-icon">⚡</span>+40% Performance</span>
+          <span class="reward"><span class="reward-icon">★</span>Liderazgo desbloqueado</span>
+          <span class="reward"><span class="reward-icon">🎯</span>5 mentees</span>
+        </div>
+      </div>
+    </div>
+    <div class="quest" onclick="showQuest('q2')">
+      <div class="quest-header">
+        <span class="quest-title">Full Stack Mercenary</span>
+        <span class="quest-status completed">COMPLETADA</span>
+      </div>
+      <div class="quest-body">
+        <div class="quest-meta">// STARTUP INNOVADORA · 2019-2022 · BARCELONA</div>
+        <p class="quest-desc">Construcción de arquitectura serverless en AWS desde cero. Integración de pasarelas de pago. APIs REST a escala.</p>
+        <div class="quest-rewards">
+          <span class="reward"><span class="reward-icon">☁</span>AWS dominado</span>
+          <span class="reward"><span class="reward-icon">💰</span>Stripe integrado</span>
+        </div>
+      </div>
+    </div>
+    <div class="quest" onclick="showQuest('q3')">
+      <div class="quest-header">
+        <span class="quest-title">Junior Street Kid</span>
+        <span class="quest-status completed">COMPLETADA</span>
+      </div>
+      <div class="quest-body">
+        <div class="quest-meta">// AGENCIA DIGITAL · 2018-2019 · MADRID</div>
+        <p class="quest-desc">Primer trabajo en las calles. Desarrollo de webs corporativas y e-commerce.</p>
+        <div class="quest-rewards">
+          <span class="reward"><span class="reward-icon">⚒</span>Fundamentos sólidos</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-header">
+      <span class="section-tag">CYBERWARE</span>
+      <h2 class="section-title">Implants Instalados</h2>
+    </div>
+    <div class="cyberware-grid">
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">LEGENDARIO ★★★★★</div><div class="cyberware-name">JavaScript ICE</div><div class="cyberware-stat">DPS: 95 · Velocidad: 100</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:95%;"></div></div></div>
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">LEGENDARIO ★★★★★</div><div class="cyberware-name">React Optic</div><div class="cyberware-stat">DPS: 92 · Componentes: 100</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:92%;"></div></div></div>
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">ÉPICO ★★★★</div><div class="cyberware-name">TypeScript Guard</div><div class="cyberware-stat">Defensa: 90 · Tipos: ∞</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:90%;"></div></div></div>
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">ÉPICO ★★★★</div><div class="cyberware-name">Node.js Engine</div><div class="cyberware-stat">Throughput: 88 · Async: 100</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:88%;"></div></div></div>
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">RARO ★★★</div><div class="cyberware-name">AWS Cloud Drive</div><div class="cyberware-stat">Escala: 75 · Disponibilidad: 99.9%</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:75%;"></div></div></div>
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">RARO ★★★</div><div class="cyberware-name">Python Daemon</div><div class="cyberware-stat">Versatilidad: 70</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:70%;"></div></div></div>
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">RARO ★★★</div><div class="cyberware-name">Docker Container</div><div class="cyberware-stat">Aislamiento: 72</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:72%;"></div></div></div>
+      <div class="cyberware"><div class="cyberware-corner"></div><div class="cyberware-tier">POCO COMÚN ★★</div><div class="cyberware-name">PostgreSQL Vault</div><div class="cyberware-stat">Capacidad: 80</div><div class="cyberware-bar"><div class="cyberware-bar-fill" style="width:80%;"></div></div></div>
+    </div>
+    <div class="section-header">
+      <span class="section-tag">EXP</span>
+      <h2 class="section-title">Formación // Hackeada</h2>
+    </div>
+    <div class="quest">
+      <div class="quest-header">
+        <span class="quest-title">Grado en Ingeniería Informática</span>
+        <span class="quest-status completed">COMPLETADA</span>
+      </div>
+      <div class="quest-body">
+        <div class="quest-meta">// UNIVERSIDAD POLITÉCNICA · 2015-2019</div>
+        <p class="quest-desc">Especialidad en software. 5 años de entrenamiento riguroso en arquitecturas, algoritmos y diseño de sistemas.</p>
+      </div>
+    </div>
+    <div class="quest">
+      <div class="quest-header">
+        <span class="quest-title">Máster Cloud Computing</span>
+        <span class="quest-status completed">COMPLETADA</span>
+      </div>
+      <div class="quest-body">
+        <div class="quest-meta">// AWS ACADEMY · 2021</div>
+        <p class="quest-desc">Certificación oficial. AWS Solutions Architect Associate.</p>
+      </div>
+    </div>
+    <section class="contact-strip">
+      <h3>// INICIAR_CONTACTO</h3>
+      <div class="contact-grid">
+        <div class="contact-item"><div class="label">FRECUENCIA</div>ernesto@ejemplo.com</div>
+        <div class="contact-item"><div class="label">HOLO</div>+34 600 000 000</div>
+        <div class="contact-item"><div class="label">UBICACIÓN</div>MADRID, ES</div>
+        <div class="contact-item"><div class="label">RED</div>linkedin.com/in/ernesto</div>
+      </div>
+    </section>
+  </div>
+  <div class="holo-overlay" id="holoOverlay">
+    <div class="holo">
+      <button class="close" onclick="closeHolo()">✕</button>
+      <h3 id="hTitle"></h3>
+      <div class="meta" id="hMeta"></div>
+      <div id="hBody"></div>
+    </div>
+  </div>
+<script>
+  const quests = {
+    q1: { title: 'Senior Frontend Operative', meta: '// TECH COMPANY S.L. · 2022 — PRESENTE', body: '<ul><li>Liderazgo del equipo frontend (5 personas)</li><li>Migración completa a Next.js 14 + TypeScript</li><li>Mejora del rendimiento web en un 40%</li><li>Implementación de CI/CD con GitHub Actions</li><li>Mentoring de 2 desarrolladores junior</li></ul><p style="margin-top:12px;color:var(--yellow);">+1500 XP · NUEVO PERK DESBLOQUEADO: TEAM LEADER</p>' },
+    q2: { title: 'Full Stack Mercenary', meta: '// STARTUP INNOVADORA · 2019-2022', body: '<ul><li>APIs REST con Node.js + Express</li><li>Arquitectura serverless en AWS Lambda desde cero</li><li>Integración de Stripe y PayPal</li><li>Sistema OAuth de autenticación</li></ul><p style="margin-top:12px;color:var(--yellow);">+1200 XP · CLOUD MASTERY DESBLOQUEADO</p>' },
+    q3: { title: 'Junior Street Kid', meta: '// AGENCIA DIGITAL · 2018-2019', body: '<ul><li>Sitios web corporativos</li><li>Plataformas e-commerce</li><li>Mantenimiento de proyectos legacy</li></ul><p style="margin-top:12px;color:var(--yellow);">+500 XP · FUNDAMENTOS SÓLIDOS</p>' }
+  };
+  function showQuest(id) {
+    const q = quests[id];
+    document.getElementById('hTitle').textContent = q.title;
+    document.getElementById('hMeta').textContent = q.meta;
+    document.getElementById('hBody').innerHTML = q.body;
+    document.getElementById('holoOverlay').classList.add('show');
+  }
+  function closeHolo() { document.getElementById('holoOverlay').classList.remove('show'); }
+  document.getElementById('holoOverlay').addEventListener('click', e => { if (e.target.id === 'holoOverlay') closeHolo(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHolo(); });
+
+  // Boot timer
+  const start = Date.now();
+  setInterval(() => {
+    const elapsed = Math.floor((Date.now() - start) / 1000);
+    const h = String(Math.floor(elapsed/3600)).padStart(2,'0');
+    const m = String(Math.floor(elapsed/60) % 60).padStart(2,'0');
+    const s = String(elapsed % 60).padStart(2,'0');
+    document.getElementById('bootTime').textContent = `⏱ ${h}:${m}:${s}`;
+  }, 1000);
+
+  // Random glitch effect on title
+  setInterval(() => {
+    const title = document.querySelector('h1.glitch');
+    title.style.transform = `translate(${(Math.random()-0.5)*4}px, ${(Math.random()-0.5)*2}px)`;
+    setTimeout(() => { title.style.transform = ''; }, 100);
+  }, 5000);
+</script>
+</body>
+</html>

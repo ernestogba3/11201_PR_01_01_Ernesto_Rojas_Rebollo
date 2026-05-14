@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV - Estilo Spotify</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Circular', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #121212;
+    color: #fff;
+    min-height: 100vh;
+  }
+  .cv {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .sidebar {
+    background: #000;
+    padding: 30px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    font-size: 22px;
+    font-weight: 900;
+  }
+  .logo-circle {
+    width: 36px; height: 36px;
+    background: #1db954;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .nav-section { margin-bottom: 24px; }
+  .nav-title {
+    color: #b3b3b3;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #b3b3b3;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .nav-item:hover, .nav-item.active { color: #fff; background: #282828; }
+  .nav-icon { font-size: 20px; }
+  .main {
+    background: linear-gradient(180deg, #1f3a2e 0%, #121212 400px);
+    padding: 30px 40px;
+  }
+  .top-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  .btn {
+    padding: 8px 16px;
+    border-radius: 500px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+  .btn:hover { transform: scale(1.05); }
+  .btn-outline { background: transparent; color: #fff; border: 1px solid #fff; }
+  .btn-primary { background: #fff; color: #000; }
+  .profile-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .profile-pic {
+    width: 232px; height: 232px;
+    background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    font-weight: 900;
+    box-shadow: 0 4px 60px rgba(0,0,0,0.5);
+  }
+  .profile-info .label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .profile-info h1 {
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 8px 0 16px;
+    letter-spacing: -2px;
+  }
+  .profile-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #b3b3b3;
+  }
+  .profile-meta strong { color: #fff; }
+  .play-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .play-btn {
+    width: 56px; height: 56px;
+    background: #1db954;
+    border-radius: 50%;
+    border: none;
+    color: #000;
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .play-btn:hover { transform: scale(1.05); background: #1ed760; }
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  section { margin-bottom: 40px; }
+  .track-list {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .track-header {
+    display: grid;
+    grid-template-columns: 40px 4fr 3fr 2fr;
+    padding: 12px 16px;
+    border-bottom: 1px solid #282828;
+    color: #b3b3b3;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .track {
+    display: grid;
+    grid-template-columns: 40px 4fr 3fr 2fr;
+    padding: 8px 16px;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .track:hover { background: rgba(255,255,255,0.05); }
+  .track-num { color: #b3b3b3; }
+  .track-title strong { display: block; font-weight: 600; }
+  .track-title span { color: #b3b3b3; font-size: 13px; }
+  .track-album { color: #b3b3b3; font-size: 14px; }
+  .track-duration { color: #b3b3b3; font-size: 14px; text-align: right; }
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: #181818;
+    padding: 16px;
+    border-radius: 8px;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .card:hover { background: #282828; }
+  .card-img {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #1db954, #535353);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+  .card-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+  .card-desc { color: #b3b3b3; font-size: 14px; }
+  @media (max-width: 768px) {
+    .cv { grid-template-columns: 1fr; }
+    .sidebar { position: relative; height: auto; }
+    .profile-info h1 { font-size: 48px; }
+    .profile-pic { width: 150px; height: 150px; font-size: 60px; }
+    .profile-header { flex-direction: column; align-items: center; text-align: center; }
+  }
+</style>
+</head>
+<body>
+  <div class="cv">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-circle">♪</div>
+        <span>MyCV</span>
+      </div>
+      <div class="nav-section">
+        <div class="nav-item active"><span class="nav-icon">🏠</span> Inicio</div>
+        <div class="nav-item"><span class="nav-icon">🔍</span> Buscar</div>
+        <div class="nav-item"><span class="nav-icon">📚</span> Tu Biblioteca</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-title">Tus Listas</div>
+        <div class="nav-item">💼 Experiencia</div>
+        <div class="nav-item">🎓 Educación</div>
+        <div class="nav-item">⚡ Skills Top</div>
+        <div class="nav-item">🏆 Proyectos</div>
+        <div class="nav-item">🌍 Idiomas</div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="top-bar">
+        <button class="btn btn-outline">Descargar CV</button>
+        <button class="btn btn-primary">Contactar</button>
+      </div>
+      <div class="profile-header">
+        <div class="profile-pic">EG</div>
+        <div class="profile-info">
+          <span class="label">Perfil verificado</span>
+          <h1>Ernesto García</h1>
+          <div class="profile-meta">
+            <strong>Desarrollador Full Stack</strong>
+            <span>•</span> Madrid, España <span>•</span> <strong>1.2K conexiones</strong> <span>•</span> 47 proyectos
+          </div>
+        </div>
+      </div>
+      <div class="play-section">
+        <button class="play-btn" id="playBtn">▶</button>
+        <span style="font-size:14px;color:#b3b3b3;">Reproduciendo CV...</span>
+      </div>
+      <section>
+        <h2>Experiencia popular</h2>
+        <div class="track-list">
+          <div class="track-header">
+            <span>#</span><span>Puesto</span><span>Empresa</span><span>Duración</span>
+          </div>
+          <div class="track">
+            <span class="track-num">1</span>
+            <div class="track-title"><strong>Senior Frontend Developer</strong><span>React • TypeScript • Next.js</span></div>
+            <span class="track-album">Tech Company S.L.</span>
+            <span class="track-duration">3 años</span>
+          </div>
+          <div class="track">
+            <span class="track-num">2</span>
+            <div class="track-title"><strong>Full Stack Developer</strong><span>Node.js • PostgreSQL • AWS</span></div>
+            <span class="track-album">Startup Innovadora</span>
+            <span class="track-duration">2 años</span>
+          </div>
+          <div class="track">
+            <span class="track-num">3</span>
+            <div class="track-title"><strong>Junior Web Developer</strong><span>HTML • CSS • JavaScript</span></div>
+            <span class="track-album">Agencia Digital</span>
+            <span class="track-duration">1 año</span>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Skills favoritos</h2>
+        <div class="grid-cards">
+          <div class="card"><div class="card-img">⚛️</div><div class="card-title">React</div><div class="card-desc">Avanzado • 5 años</div></div>
+          <div class="card"><div class="card-img">📘</div><div class="card-title">TypeScript</div><div class="card-desc">Avanzado • 4 años</div></div>
+          <div class="card"><div class="card-img">🟢</div><div class="card-title">Node.js</div><div class="card-desc">Avanzado • 4 años</div></div>
+          <div class="card"><div class="card-img">🐍</div><div class="card-title">Python</div><div class="card-desc">Intermedio • 3 años</div></div>
+          <div class="card"><div class="card-img">☁️</div><div class="card-title">AWS</div><div class="card-desc">Intermedio • 2 años</div></div>
+        </div>
+      </section>
+      <section>
+        <h2>Educación destacada</h2>
+        <div class="grid-cards">
+          <div class="card"><div class="card-img">🎓</div><div class="card-title">Grado en Ingeniería Informática</div><div class="card-desc">Universidad Politécnica • 2019</div></div>
+          <div class="card"><div class="card-img">📜</div><div class="card-title">Máster en Cloud Computing</div><div class="card-desc">AWS Academy • 2021</div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+<script>
+  const playBtn = document.getElementById('playBtn');
+  let playing = false;
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? '❚❚' : '▶';
+  });
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
