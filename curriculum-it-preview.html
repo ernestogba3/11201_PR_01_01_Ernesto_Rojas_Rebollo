@@ -1273,6 +1273,11 @@
       <div class="sdiv fi"></div>
       <div class="sk-grid fi" id="inject-skills"></div>
     </section>
+    <section id="languages" style="display:none">
+      <h2 class="sh fi"><span class="ico">🌐</span>Idiomas</h2>
+      <div class="sdiv fi"></div>
+      <div class="edu-g fi" id="inject-languages"></div>
+    </section>
     <section id="experience" style="display:none">
       <h2 class="sh fi"><span class="ico">💼</span>Experiencia</h2>
       <div class="sdiv fi"></div>
@@ -1283,10 +1288,30 @@
       <div class="sdiv fi"></div>
       <div class="edu-g fi" id="inject-education"></div>
     </section>
+    <section id="achievements" style="display:none">
+      <h2 class="sh fi"><span class="ico">🏆</span>Logros y reconocimientos</h2>
+      <div class="sdiv fi"></div>
+      <div class="edu-g fi" id="inject-achievements"></div>
+    </section>
+    <section id="volunteering" style="display:none">
+      <h2 class="sh fi"><span class="ico">🤲</span>Voluntariado</h2>
+      <div class="sdiv fi"></div>
+      <div class="tl fi" id="inject-volunteering"></div>
+    </section>
     <section id="projects" style="display:none">
       <h2 class="sh fi"><span class="ico">🚀</span>Proyectos</h2>
       <div class="sdiv fi"></div>
       <div class="proj-g fi" id="inject-projects"></div>
+    </section>
+    <section id="interests" style="display:none">
+      <h2 class="sh fi"><span class="ico">✨</span>Intereses</h2>
+      <div class="sdiv fi"></div>
+      <div class="about-g fi" id="inject-interests"></div>
+    </section>
+    <section id="otherInfo" style="display:none">
+      <h2 class="sh fi"><span class="ico">📋</span>Otros datos</h2>
+      <div class="sdiv fi"></div>
+      <div class="ct-g fi" id="inject-otherInfo"></div>
     </section>
     <section id="contact" style="display:none">
       <h2 class="sh fi"><span class="ico">📬</span>Contacto</h2>
@@ -1303,31 +1328,43 @@
     ══════════════════════════════════════════════════ */
     const CV_DATA = {
 
-      /* Secciones visibles: cambiar a false para ocultar */
+      /* Secciones visibles: se controlan con los flags mostrar_* y .exists del perfil */
       sections: {
-        about: true, skills: true, experience: true,
-        education: true, projects: true, contact: true
+        about:        true,
+        skills:       true,
+        languages:    true,
+        experience:   true,
+        education:    true,
+        achievements: true,
+        volunteering: true,
+        projects:     true,
+        interests:    true,
+        otherInfo:    true,
+        contact:      true
       },
 
-      /* Datos personales */
+      /* Datos personales — grupo PERSONAL INFO + SOCIAL NETWORKS */
       meta: {
-        name: '{{profile.cv_personal_info.nombre}}',
-        // initials: 'AM',
-        avatar: 'profile.cv_personal_info.models.ImageField(`Foto`,upload_to=`curriculum/fotos/`,null=True,blank=True)',
+        name: 'Alex Martínez',
+        initials: 'AM',
+        avatar: 'AM',
         email: 'alex.martinez@dev.io',
         phone: '+34 600 123 456',
         linkedin: 'linkedin.com/in/alexmartinez',
         github: 'github.com/alexmdev',
         portfolio: 'alexmartinez.dev',
-        location: 'Madrid, España · Remote OK',
-        pdfFile: 'CV-Alex-Martinez-FullStack.pdf'
+        location: 'Madrid, España',
+        pdfFile: 'CV-alex-martinez.pdf'
       },
 
-      /* Hero */
+      /* Hero — profesión + resumen del PROFESSIONAL PROFILE */
       hero: {
         tagline: 'Disponible · Open to Work',
-        roles: ['Full Stack Developer', 'Cloud Architect', 'DevOps Engineer', 'Open Source Contributor', 'Tech Lead'],
-        description: 'Full Stack Developer con +5 años construyendo sistemas escalables y apasionado por arquitecturas limpias, DevOps y tecnologías de vanguardia.',
+        roles: [
+          'Full Stack Developer','Cloud Architect',
+        ],
+        description: 'Full Stack Developer con +5 años construyendo sistemas escalables, apasionado por arquitecturas limpias, DevOps y tecnologías de vanguardia.',
+        /* Las "stats" no tienen variable documentada en el PDF: edítalas a mano o elimínalas */
         stats: [
           { n: 5, suf: '+', label: 'Años exp.' },
           { n: 40, suf: '', label: 'Proyectos' },
@@ -1336,114 +1373,157 @@
         ]
       },
 
-      /* Sobre mí */
+      /* Sobre mí — resumen + habilidades (hard) como badges + info de contacto */
       about: {
         paragraphs: [
-          'Soy un <span class="hl">Full Stack Developer</span> especializado en el ecosistema JavaScript/TypeScript y cloud computing. Me apasiona crear soluciones que combinen rendimiento, seguridad y experiencia de usuario excepcional.',
-          'Con experiencia en <span class="hl">startups y corporaciones</span>, he liderado equipos, diseñado arquitecturas distribuidas y optimizado sistemas críticos procesando millones de eventos diarios.',
-          'Actualmente profundizando en <span class="hl">IA/ML aplicada</span> al desarrollo de software y arquitecturas serverless en AWS y GCP.'
+          'Full Stack Developer con +5 años construyendo sistemas escalables, apasionado por arquitecturas limpias, DevOps y tecnologías de vanguardia.','Cloud Architect',
         ],
-        badges: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Docker', 'Kubernetes', 'AWS', 'PostgreSQL', 'MongoDB', 'GraphQL', 'Redis'],
+        badges: [
+          'React / Next.js','TypeScript','Node.js','Docker / K8s',
+        ],
         info: [
-          { ico: '📍', label: 'Ubicación', val: 'Madrid, España · Remote OK' },
+          { ico: '📍', label: 'Ubicación', val: 'Madrid, España' },
           { ico: '✉', label: 'Email', val: 'alex.martinez@dev.io' },
           { ico: '💼', label: 'LinkedIn', val: 'linkedin.com/in/alexmartinez' },
           { ico: '🐙', label: 'GitHub', val: 'github.com/alexmdev' },
           { ico: '🌐', label: 'Portfolio', val: 'alexmartinez.dev' },
-          { ico: '📞', label: 'Teléfono', val: '+34 600 123 456' }
+          { ico: '📞', label: 'Teléfono', val: '+34 600 123 456' },
+          { ico: '📱', label: 'Teléfono 2', val: '+34 911 234 567' },
+          { ico: '📧', label: 'Email 2', val: 'hola@alexmartinez.dev' },
+          { ico: '🌎', label: 'Nacionalidad', val: 'Española' },
+          { ico: '🎂', label: 'Nacimiento', val: '12/05/1994' },
+          { ico: '🚗', label: 'Carnet de conducir', val: 'Sí' },
+          { ico: '🏷', label: 'Código postal', val: '28013' }
         ]
       },
 
-      /* Habilidades */
+      /* Habilidades — agrupadas en Técnicas (hard) y Soft skills.
+         El modelo solo tiene nombre/tipo/nivel (no categorías), así que usamos esos dos grupos.
+         pct = nivel x 10 (igual que en el PDF: width:0%) */
       skills: [
         {
-          cat: '⚛ Frontend', items: [
-            { name: 'React / Next.js', pct: 95 }, { name: 'TypeScript', pct: 90 },
-            { name: 'CSS / Tailwind', pct: 88 }, { name: 'Vue.js', pct: 75 }
+          cat: '⚡ Habilidades técnicas', items: [
+            { name: 'React / Next.js', pct: 90 },{ name: 'TypeScript', pct: 90 },{ name: 'Node.js', pct: 90 },{ name: 'Docker / K8s', pct: 80 },
           ]
         },
         {
-          cat: '🖥 Backend', items: [
-            { name: 'Node.js / Express', pct: 93 }, { name: 'Python / FastAPI', pct: 86 },
-            { name: 'GraphQL', pct: 80 }, { name: 'Go (Golang)', pct: 65 }
-          ]
-        },
-        {
-          cat: '☁ DevOps &amp; Cloud', items: [
-            { name: 'Docker / Kubernetes', pct: 88 }, { name: 'AWS / GCP', pct: 83 },
-            { name: 'CI/CD · GitHub Actions', pct: 85 }, { name: 'Terraform / IaC', pct: 70 }
-          ]
-        },
-        {
-          cat: '🗄 Bases de Datos', items: [
-            { name: 'PostgreSQL', pct: 91 }, { name: 'MongoDB', pct: 86 },
-            { name: 'Redis', pct: 78 }, { name: 'Elasticsearch', pct: 64 }
+          cat: '🤝 Soft skills', items: [
+            { name: 'Trabajo en equipo', pct: 90 },{ name: 'Liderazgo', pct: 80 },
           ]
         }
       ],
 
-      /* Experiencia */
+      /* Experiencia — profile.experiencias.all
+         Nota: el modelo no tiene campo de "tecnologías" por experiencia, así que techs va vacío. */
       experience: [
+        
         {
-          title: 'Senior Full Stack Developer', period: '2022 — Presente',
-          company: '🏢 TechCorp Solutions · Madrid (Remoto)',
-          desc: 'Lideré el desarrollo de una plataforma SaaS B2B, escalando de 1k a 50k usuarios activos. Responsable de la arquitectura de microservicios y optimización de rendimiento.',
+          title: 'Senior Full Stack Developer',
+          period: '2022 — Presente',
+          company: 'TechCorp Solutions · Madrid (Remoto)',
+          desc: 'Lideré el desarrollo de una plataforma SaaS B2B escalando de 1k a 50k usuarios.',
           bullets: [
-            'Reducción del tiempo de carga en 60% mediante SSR y lazy loading estratégico',
-            'Diseño de API Gateway con rate limiting, circuit breaker y autenticación JWT/OAuth2',
-            'Mentorización de equipo de 4 developers y revisiones de código semanales',
-            'Pipeline CI/CD con zero-downtime deployments en Kubernetes'
+            'Reducción del tiempo de carga en 60%','Diseño de API Gateway con JWT/OAuth2','Mentorización de equipo de 4 devs',
           ],
-          techs: ['React', 'Node.js', 'PostgreSQL', 'Docker', 'AWS', 'Redis', 'Kafka']
+          techs: []
         },
+        
         {
-          title: 'Full Stack Developer', period: '2020 — 2022',
-          company: '🚀 Innovatech Startup · Barcelona (Híbrido)',
-          desc: 'Desarrollo de aplicaciones web y móviles para clientes fintech en equipo ágil con sprints de 2 semanas usando Scrum y metodología Shape Up.',
+          title: 'Full Stack Developer',
+          period: '2020 — 2022',
+          company: 'Innovatech · Barcelona',
+          desc: 'Desarrollo de apps web y móviles para clientes fintech.',
           bullets: [
-            'App de pagos procesando +$2M/mes con integración Stripe, Braintree y Adyen',
-            'Websockets para notificaciones en tiempo real con latencia &lt;80ms',
-            'Reducción del 40% en costos de infraestructura mediante optimización de queries'
+            'App de pagos +$2M/mes con Stripe','Reducción del 40% en costos',
           ],
-          techs: ['Vue.js', 'Python', 'FastAPI', 'MongoDB', 'Kubernetes', 'GCP']
+          techs: []
         },
-        {
-          title: 'Junior Web Developer', period: '2019 — 2020',
-          company: '💻 Digital Agency Pro · Valencia',
-          desc: 'Desarrollo de sitios web corporativos y e-commerce para PYMEs. Primer contacto profesional con frameworks modernos y metodologías de trabajo en equipo.',
-          bullets: [
-            'Entrega de +15 proyectos web en tiempo y presupuesto acordados',
-            'Optimización SEO técnica: mejora promedio del 35% en ranking orgánico'
-          ],
-          techs: ['JavaScript', 'PHP', 'MySQL', 'WordPress', 'Sass']
-        }
+        
       ],
 
-      /* Educación */
+      /* Educación — profile.educaciones.all (el modelo no tiene "details", usamos la ubicación) */
       education: [
-        { ico: '🎓', degree: 'Grado en Ingeniería Informática', institution: 'Universidad Politécnica de Madrid', period: '2015 — 2019', details: 'Especialización en Sistemas Distribuidos. TFG sobre algoritmos de consenso distribuido. Nota media: 8.4/10' },
-        { ico: '☁', degree: 'AWS Solutions Architect — Associate', institution: 'Amazon Web Services', period: '2021', details: 'Certificación oficial en diseño de arquitecturas cloud escalables, resilientes y seguras sobre AWS.' },
-        { ico: '🤖', degree: 'Machine Learning Specialization', institution: 'Coursera / Stanford University', period: '2023', details: 'Especialización en ML, redes neuronales profundas y MLOps. 3 cursos completados con distinción.' },
-        { ico: '🐙', degree: 'GitHub Actions Certification', institution: 'GitHub', period: '2022', details: 'Automatización de pipelines CI/CD y deployment workflows avanzados con GitHub Actions y OIDC.' }
+        
+        { ico: '🎓', degree: 'Grado en Ingeniería Informática', institution: 'Universidad Politécnica de Madrid', period: '2015 — 2019', details: 'Madrid' },
+        
+        
+        { ico: '📜', degree: 'AWS Solutions Architect', institution: 'Amazon Web Services', period: '2021', details: 'Certificación' },
+        
       ],
 
-      /* Proyectos */
+      /* Proyectos — profile.proyectos.all
+         tecnologias es un texto único: lo partimos por comas para el array de techs. */
       projects: [
-        { ico: '⚡', name: 'CloudSync Platform', type: 'SaaS', desc: 'Plataforma de sincronización de datos en tiempo real entre servicios cloud. Procesa +1M eventos/día con latencia inferior a 50ms.', techs: ['Node.js', 'Kafka', 'Redis', 'AWS Lambda'], links: [{ label: '🐙 GitHub', href: '#' }, { label: '🌐 Demo', href: '#' }] },
-        { ico: '🤖', name: 'DevBot AI', type: 'IA/ML', desc: 'Asistente de código con LLMs que analiza repositorios, detecta bugs y genera documentación automáticamente.', techs: ['Python', 'OpenAI', 'FastAPI', 'React'], links: [{ label: '🐙 GitHub', href: '#' }, { label: '📖 Docs', href: '#' }] },
-        { ico: '📊', name: 'DataViz Dashboard', type: 'Analytics', desc: 'Dashboard de analytics en tiempo real con visualizaciones interactivas para equipos de marketing y producto. 500+ usuarios activos.', techs: ['React', 'D3.js', 'PostgreSQL', 'GraphQL'], links: [{ label: '🐙 GitHub', href: '#' }, { label: '🌐 Demo', href: '#' }] },
-        { ico: '🔐', name: 'AuthShield', type: 'Security', desc: 'Librería open-source de auth con OAuth2, SAML y MFA. +1.2k ⭐ en GitHub, descargada por equipos en 18 países.', techs: ['TypeScript', 'JWT', 'OAuth2', 'npm'], links: [{ label: '🐙 GitHub', href: '#' }, { label: '📦 npm', href: '#' }] },
-        { ico: '🛒', name: 'MicroShop', type: 'E-commerce', desc: 'Arquitectura de microservicios para e-commerce: servicios de productos, carrito, pagos y notificaciones independientes y escalables.', techs: ['Go', 'gRPC', 'Kubernetes', 'MongoDB'], links: [{ label: '🐙 GitHub', href: '#' }] },
-        { ico: '🌍', name: 'RemoteWork CLI', type: 'Dev Tools', desc: 'CLI para gestión de entornos remote con sync automático, tunneling SSH seguro y gestión de secrets encriptados con AES-256.', techs: ['Go', 'Cobra', 'SSH', 'AES-256'], links: [{ label: '🐙 GitHub', href: '#' }, { label: '📖 Docs', href: '#' }] }
+        
+        {
+          ico: '🚀',
+          name: 'CloudSync Platform',
+          type: 'Proyecto',
+          desc: 'Sincronización de datos en tiempo real entre servicios cloud. +1M eventos/día.',
+          techs: 'Node.js, Kafka, Redis, AWS Lambda'.split(',').map(t => t.trim()).filter(Boolean),
+          links: [{ label: '🔗 Ver proyecto', href: 'https://github.com' }]
+        },
+        
+        {
+          ico: '🚀',
+          name: 'DevBot AI',
+          type: 'Proyecto',
+          desc: 'Asistente de código con LLMs.',
+          techs: 'Python, OpenAI, FastAPI'.split(',').map(t => t.trim()).filter(Boolean),
+          links: []
+        },
+        
       ],
 
-      /* Contacto */
+      /* Idiomas — profile.idiomas.all */
+      languages: [
+        
+        { name: 'Español', level: 'Nativo', cert: '' },
+        
+        { name: 'Inglés', level: 'C1', cert: 'Cambridge C1 Advanced' },
+        
+        { name: 'Francés', level: 'B1', cert: '' },
+        
+      ],
+
+      /* Logros y reconocimientos — profile.logros.all */
+      achievements: [
+        
+        { tipo: 'premio', title: '1er puesto Hackathon Fintech 2023', meta: 'Premio · 2023', desc: 'Equipo ganador entre 40 participantes.' },
+        
+        { tipo: 'merito', title: 'Empleado del año', meta: 'Mérito · 2022', desc: '' },
+        
+      ],
+
+      /* Voluntariado — profile.voluntariados.all */
+      volunteering: [
+        
+        { role: 'Mentor de programación', org: 'CoderDojo Madrid', impact: 'Formé a +30 jóvenes en fundamentos de desarrollo web.' },
+        
+      ],
+
+      /* Intereses — profile.intereses.all */
+      interests: [
+        'Open Source','Ajedrez','Fotografía','Senderismo',
+      ],
+
+      /* Otros datos — profile.cv.other_info */
+      otherInfo: {
+        teletrabajo: 'Híbrido',
+        viajar: true,
+        salario: '45.000 € — 55.000 €'
+      },
+
+      /* Contacto — datos de PERSONAL INFO + SOCIAL NETWORKS */
       contact: {
         items: [
           { ico: '✉', label: 'Email', val: 'alex.martinez@dev.io' },
+          { ico: '📧', label: 'Email 2', val: 'hola@alexmartinez.dev' },
           { ico: '📞', label: 'Teléfono', val: '+34 600 123 456' },
+          { ico: '📱', label: 'Teléfono 2', val: '+34 911 234 567' },
           { ico: '💼', label: 'LinkedIn', val: 'linkedin.com/in/alexmartinez' },
-          { ico: '🐙', label: 'GitHub', val: 'github.com/alexmdev' }
+          { ico: '🐙', label: 'GitHub', val: 'github.com/alexmdev' },
+          { ico: '🌐', label: 'Portfolio', val: 'alexmartinez.dev' },
         ],
         cta: {
           title: '¿Tienes un proyecto en mente?',
@@ -1462,9 +1542,14 @@
       document.getElementById('nav-logo').innerHTML = `&lt;${M.initials} /&gt;`;
       document.getElementById('inject-footer').innerHTML =
         `&lt;/&gt; con ❤ por <span style="color:var(--a1)">${M.name}</span> &nbsp;·&nbsp; <span style="color:var(--a3)">Open to work 2024</span>`;
-      document.getElementById('inject-avatar').textContent = M.avatar;
+      const _avEl = document.getElementById('inject-avatar');
+      if (M.avatar && /(^https?:|^\/|\.(png|jpe?g|webp|gif|svg))/i.test(M.avatar)) {
+        _avEl.innerHTML = `<img src="${M.avatar}" alt="${M.name}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`;
+      } else {
+        _avEl.textContent = M.avatar;
+      }
 
-      const navLabels = { about: 'Sobre mí', skills: 'Skills', experience: 'Experiencia', education: 'Educación', projects: 'Proyectos', contact: 'Contacto' };
+      const navLabels = { about: 'Sobre mí', skills: 'Skills', languages: 'Idiomas', experience: 'Experiencia', education: 'Educación', achievements: 'Logros', volunteering: 'Voluntariado', projects: 'Proyectos', interests: 'Intereses', otherInfo: 'Otros datos', contact: 'Contacto' };
       document.getElementById('nav-ul').innerHTML = Object.entries(navLabels)
         .filter(([k]) => D.sections[k])
         .map(([k, v]) => `<li><a href="#${k}">${v}</a></li>`).join('');
@@ -1472,8 +1557,11 @@
       renderHero();
 
       const fns = {
-        about: renderAbout, skills: renderSkills, experience: renderExperience,
-        education: renderEducation, projects: renderProjects, contact: renderContact
+        about: renderAbout, skills: renderSkills, languages: renderLanguages,
+        experience: renderExperience, education: renderEducation,
+        achievements: renderAchievements, volunteering: renderVolunteering,
+        projects: renderProjects, interests: renderInterests,
+        otherInfo: renderOtherInfo, contact: renderContact
       };
       Object.entries(fns).forEach(([k, fn]) => {
         const el = document.getElementById(k);
@@ -1571,6 +1659,57 @@
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center">
         ${c.cta.badges.map(b => `<span class="badge">${b}</span>`).join('')}
       </div>
+    </div>`;
+    }
+
+    function renderLanguages() {
+      document.getElementById('inject-languages').innerHTML = CV_DATA.languages.map(l => `
+    <div class="card">
+      <div class="edu-d">${l.name}</div>
+      <div class="edu-p">${l.level}${l.cert ? ` · ${l.cert}` : ''}</div>
+    </div>`).join('');
+    }
+
+    function renderAchievements() {
+      const ICO = { premio: '🏆', merito: '🎓', evento: '🎯' };
+      document.getElementById('inject-achievements').innerHTML = CV_DATA.achievements.map(a => `
+    <div class="card">
+      <div class="edu-ico">${ICO[a.tipo] || '⭐'}</div>
+      <div class="edu-d">${a.title}</div>
+      <div class="edu-p">${a.meta}</div>
+      ${a.desc ? `<div class="edu-det">${a.desc}</div>` : ''}
+    </div>`).join('');
+    }
+
+    function renderVolunteering() {
+      document.getElementById('inject-volunteering').innerHTML = CV_DATA.volunteering.map(v => `
+    <div class="tli card">
+      <div class="tldot"></div>
+      <div class="tlh"><span class="jt">${v.role}</span></div>
+      <div class="jc">${v.org}</div>
+      ${v.impact ? `<p class="jd">${v.impact}</p>` : ''}
+    </div>`).join('');
+    }
+
+    function renderInterests() {
+      document.getElementById('inject-interests').innerHTML = `
+    <div><div class="badges">${CV_DATA.interests.map(i => `<span class="badge">${i}</span>`).join('')}</div></div>`;
+    }
+
+    function renderOtherInfo() {
+      const o = CV_DATA.otherInfo;
+      const rows = [
+        { ico: '🏠', label: 'Teletrabajo', val: o.teletrabajo },
+        { ico: '✈', label: 'Disponibilidad para viajar', val: o.viajar ? 'Sí' : 'No' },
+        { ico: '💰', label: 'Expectativa salarial', val: o.salario }
+      ].filter(r => r.val !== '' && r.val != null);
+      document.getElementById('inject-otherInfo').innerHTML = `
+    <div class="ct-list">
+      ${rows.map(r => `
+        <div class="ct-item">
+          <div class="ct-ico">${r.ico}</div>
+          <div><span class="ct-lbl">${r.label}</span><span class="ct-val">${r.val}</span></div>
+        </div>`).join('')}
     </div>`;
     }
 

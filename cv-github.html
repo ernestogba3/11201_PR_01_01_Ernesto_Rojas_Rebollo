@@ -240,18 +240,31 @@
   </header>
   <div class="container">
     <aside class="sidebar">
-      <div class="avatar">EG</div>
-      <div class="name">Ernesto García</div>
-      <div class="username">ernestodev</div>
+      <div class="avatar">{{profile.cv.personal_info.foto}}</div>
+      <div class="name">{{profile.cv.personal_info.nombre}}{{profile.cv.personal_info.apellidos}}</div>
+      <div class="username">{{profile.cv.personal_info.nombre}}dev</div>
       <p class="bio">Full Stack Developer building things on the web. Coffee enthusiast ☕</p>
       <button class="btn-follow">Follow</button>
       <div class="stats-list">
-        <div class="stat-item">👥 <strong>1.2k</strong> followers · <strong>284</strong> following</div>
-        <div class="stat-item">⭐ <strong>523</strong> stars</div>
-        <div class="stat-item">🏢 @TechCompany</div>
-        <div class="stat-item">📍 Madrid, España</div>
-        <div class="stat-item">📧 ernesto@ejemplo.com</div>
-        <div class="stat-item">🔗 ernestogarcia.dev</div>
+        <div class="stat-item">👥<strong>1.2k</strong> fllwrs <strong>284</strong> following</div>
+        <div class="stat-item">⭐<strong>523</strong> stars</div>
+        <div class="stat-item">🇪🇸 {{profile.cv.personal_info.nacionalidad}}</div>
+        
+        <div class="stat-item">📍{{profile.cv.personal_info.ciudad}}{{profile.cv.personal_info.pais}}
+          {{profile.cv.personal_info.codigo_postal}}</div>
+        <div class="stat-item">📧{{profile.cv.personal_info.email_profesional1}}</div>
+
+        {% if profile.cv.personal_info.email_profesional2 %}
+          <div class="stat-item">📧 {{profile.cv.personal_info.email_profesional2}}</div>
+        {%endif%}
+        
+        <div class="stat-item">📞 {{profile.cv.personal_info.telefono1}}</div>
+        {% if profile.cv.personal_info.telefono2 %}
+          <div class="stat-item">📱 {{profile.cv.personal_info.telefono2}}</div>
+        {%endif%}
+        <div class="stat-item">🟢<strong>{{profile.cv.personal_info.disponibilidad}}</strong></div>
+         <div class="stat-item">🚗<strong>{{profile.cv.personal_info.carnet_conducir}}</strong></div>
+        
       </div>
     </aside>
     <main class="main">
@@ -265,8 +278,7 @@
       <div class="readme">
         <div class="readme-header">📄 ernestodev / README.md</div>
         <div class="readme-body">
-          <h1>👋 Hola, soy Ernesto</h1>
-          <div class="badges">
+          <h1>👋 Hola, soy {{profile.cv.personal_info.nombre}}
             <span class="badge">JavaScript</span>
             <span class="badge purple">TypeScript</span>
             <span class="badge green">Node.js</span>
@@ -274,7 +286,6 @@
             <span class="badge red">AWS</span>
           </div>
           <p>Soy un desarrollador <strong>full stack</strong> con más de 7 años de experiencia construyendo productos web que la gente disfruta usar. Me apasiona el código limpio, las arquitecturas escalables y aprender algo nuevo cada día.</p>
-
           <h2>💼 Experiencia laboral</h2>
           <h3>Senior Frontend Developer @ Tech Company</h3>
           <p><code>2022 - Presente</code></p>
