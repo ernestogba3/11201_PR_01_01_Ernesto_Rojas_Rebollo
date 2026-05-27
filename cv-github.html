@@ -445,6 +445,13 @@
       /* Grid de 3 columnas para los extras (en escritorio).
    En móvil hereda automáticamente el grid-template-columns: 1fr
    del media query que ya tienes en .repo-grid */
+      /* En tablet, pasa a 2 columnas para que no se aprieten */
+      @media (max-width: 1024px) {
+        .extras-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
       .extras-grid {
         grid-template-columns: repeat(3, 1fr);
       }
@@ -485,12 +492,6 @@
         text-decoration: underline;
       }
 
-      /* En tablet, pasa a 2 columnas para que no se aprieten */
-      @media (max-width: 1024px) {
-        .extras-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
 
       .readme h3.subsection {
         margin-top: 32px;
@@ -520,7 +521,7 @@
   <div class="container">
     <aside class="sidebar">
       <div class="avatar">{{profile.cv.personal_info.foto}}</div>
-      <div class="name">{{profile.cv.personal_info.nombre}}{{profile.cv.personal_info.apellidos}}</div>
+      <div class="name">{{profile.cv.personal_info.nombre}} {{profile.cv.personal_info.apellidos}}</div>
       <div class="username">{{profile.cv.personal_info.nombre}}dev</div>
 
       {% if profile.cv.professional_profile.profesion %}
@@ -533,7 +534,7 @@
         <div class="stat-item">⭐<strong>523</strong> stars</div>
         <div class="stat-item">🇪🇸 {{profile.cv.personal_info.nacionalidad}}</div>
 
-        <div class="stat-item">📍{{profile.cv.personal_info.ciudad}}{{profile.cv.personal_info.pais}}
+        <div class="stat-item">📍{{profile.cv.personal_info.ciudad}} {{profile.cv.personal_info.pais}}
           {{profile.cv.personal_info.codigo_postal}}</div>
         <div class="stat-item">📧{{profile.cv.personal_info.email_profesional1}}</div>
 
@@ -545,9 +546,10 @@
         {% if profile.cv.personal_info.telefono2 %}
         <div class="stat-item">📱 {{profile.cv.personal_info.telefono2}}</div>
         {%endif%}
-        <div class="stat-item">🟢<strong>{{profile.cv.personal_info.disponibilidad}}</strong></div>
+        <div class="stat-item">🟢<strong>{{profile.cv.personal_info.get_disponibilidad_display}}</strong></div>
+        {% if profile.cv.personal_info.carnet_conducir%}
         <div class="stat-item">🚗<strong>{{profile.cv.personal_info.carnet_conducir}}</strong></div>
-
+        {%endif%}
       </div>
     </aside>
 
@@ -641,166 +643,170 @@
             {% endif %}
           </div>
           {% endif%}
-        </div>
 
-        {{% if pp.resumen%}}
-        <p>{{pp.resumen | linebreaksbr}}</p>
-        {%endif%}
 
-        {{% if pp.objetivo%}}
-        <h2>🎯 Objetivo profesional</h2>
-        <p>{{ pp.objetivo }}</p>
-        {%endif%}
+          {% if pp.resumen%}
+          <p>{{pp.resumen|linebreaksbr}}</p>
+          {%endif%}
 
-        {% if profile.habilidades.exists %}
-        <h2>⚡ Habilidades</h2>
+          {% if pp.objetivo%}
+          <h2>🎯 Objetivo profesional</h2>
+          <p>{{ pp.objetivo }}</p>
+          {%endif%}
 
-        {# Hard skills: con barra de nivel #}
-        <h3>Habilidades técnicas</h3>
-        {% for s in profile.habilidades.all %}
-        {% if s.tipo == 'hard' %}
-        <div class="skill-bar-item">
-          <div class="skill-bar-item__name">
-            <span>{{ s.nombre }}</span>
-            {% if s.nivel %}<span class="skill-bar-item__pct">{{ s.nivel|floatformat:0 }}0%</span>{% endif %}
-          </div>
-          {% if s.nivel %}
-          <div class="skill-bar">
-            <div class="skill-bar__fill" style="width:{{ s.nivel|floatformat:0 }}0%"></div>
-          </div>
-          {% endif %}
-        </div>
-        {% endif %}
-        {% endfor %}
+          {% if profile.habilidades.exists %}
+          <h2>⚡ Habilidades</h2>
 
-        {# Soft skills: como badges (reutilizando tu clase .badges) #}
-        <h3>Soft skills</h3>
-        <div class="badges">
+          {# Hard skills: con barra de nivel #}
+          <h3>Habilidades técnicas</h3>
           {% for s in profile.habilidades.all %}
-          {% if s.tipo == 'soft' %}
-          <span class="badge {% cycle '' 'purple' 'green' 'orange' 'red' %}">{{ s.nombre }}</span>
+          {% if s.tipo == 'hard' %}
+          <div class="skill-bar-item">
+            <div class="skill-bar-item__name">
+              <span>{{ s.nombre }}</span>
+              {% if s.nivel %}<span class="skill-bar-item__pct">{{ s.nivel|floatformat:0 }}0%</span>{% endif %}
+            </div>
+            {% if s.nivel %}
+            <div class="skill-bar">
+              <div class="skill-bar__fill" style="width:{{ s.nivel|floatformat:0 }}0%"></div>
+            </div>
+            {% endif %}
+          </div>
           {% endif %}
           {% endfor %}
-        </div>
-        {% endif %}
 
-        {% if profile.experiencias.exists %}
-        <h2>💼 Experiencia laboral</h2>
-
-        {% for exp in profile.experiencias.all %}
-        <h3>{{ exp.puesto }} @ {{ exp.empresa }}{% if exp.ubicacion %} · {{ exp.ubicacion }}{% endif %}</h3>
-        <p><code>{{ exp.periodo }}</code></p>
-        {% endfor %}
-
-        {% if exp.descripcion %}
-        <p>{{ exp.descripcion|linebreaksbr }}</p>
-        {% endif %}
-
-        {% if exp.logros %}
-        <ul>
-          {% for logro in exp.logros.splitlines %}
-          {% if logro %}<li>{{ logro }}</li>{% endif %}
-          {% endfor %}
-        </ul>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-
-        {% if profile.educaciones.exists or profile.formaciones.exists %}
-        <h2>🎓 Educación</h2>
-
-        {# --- Académica --- #}
-        {% if profile.educaciones.exists %}
-        {% for edu in profile.educaciones.all %}
-        <h3>{{ edu.titulo }}</h3>
-        <p>{{ edu.centro }}{% if edu.ubicacion %} · {{ edu.ubicacion }}{% endif %} — <code>{{ edu.periodo }}</code></p>
-        {% endfor %}
-        {% endif %}
-
-        {# --- Complementaria (como subsección dentro del mismo H2) --- #}
-        {% if profile.formaciones.exists %}
-        <h3 class="subsection">📚 Formación complementaria</h3>
-        <ul>
-          {% for formacion in profile.formaciones.all %}
-          <li>
-            <strong>{{ formacion.get_tipo_display }}:</strong> {{ formacion.nombre }}
-            {% if formacion.entidad %} — {{ formacion.entidad }}{% endif %}
-            {% if formacion.fecha %} ({{ formacion.fecha|date:"Y" }}){% endif %}
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-
-        {% endif %}
-
-        {% if profile.proyectos.exists %}
-        <h2 style="font-size:16px; margin-bottom:8px;">📌 Pinned</h2>
-        <div class="repo-grid">
-
-          {% for proj in profile.proyectos.all %}
-          <div class="repo">
-
-            {# Nombre: clickable si hay link, normal si no #}
-            {% if proj.link %}
-            <a href="{{ proj.link }}" target="_blank" rel="noopener" class="repo-name">📚 {{ proj.nombre }}</a>
-            {% else %}
-            <div class="repo-name">📚 {{ proj.nombre }}</div>
+          {# Soft skills: como badges (reutilizando tu clase .badges) #}
+          <h3>Soft skills</h3>
+          <div class="badges">
+            {% for s in profile.habilidades.all %}
+            {% if s.tipo == 'soft' %}
+            <span class="badge {% cycle '' 'purple' 'green' 'orange' 'red' %}">{{ s.nombre }}</span>
             {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
 
-            {# Descripción truncada a 120 caracteres #}
-            {% if proj.descripcion %}
-            <div class="repo-desc">{{ proj.descripcion|truncatechars:120 }}</div>
-            {% endif %}
+          {% if profile.experiencias.exists %}
+          <h2>💼 Experiencia laboral</h2>
 
-            {# Tecnologías en la fila inferior (sustituye lenguaje + stars + forks) #}
-            {% if proj.tecnologias %}
-            <div class="repo-meta">
-              <span><span class="lang-dot" style="background:#58a6ff;"></span>{{ proj.tecnologias }}</span>
+          {% for exp in profile.experiencias.all %}
+          <h3>{{ exp.puesto }} @ {{ exp.empresa }}{% if exp.ubicacion %} · {{ exp.ubicacion }}{% endif %}</h3>
+          <p><code>{{ exp.periodo }}</code></p>
+
+
+          {% if exp.descripcion %}
+          <p>{{ exp.descripcion|linebreaksbr }}</p>
+          {% endif %}
+
+          {% if exp.logros %}
+          <ul>
+            {% for logro in exp.logros.splitlines %}
+            {% if logro %}<li>{{ logro }}</li>{% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+
+          {% if profile.educaciones.exists or profile.formaciones.exists %}
+          <h2>🎓 Educación</h2>
+
+          {# --- Académica --- #}
+          {% if profile.educaciones.exists %}
+          {% for edu in profile.educaciones.all %}
+          <h3>{{ edu.titulo }}</h3>
+          <p>{{ edu.centro }}{% if edu.ubicacion %} · {{ edu.ubicacion }}{% endif %} — <code>{{ edu.periodo }}</code>
+          </p>
+          {% endfor %}
+          {% endif %}
+
+          {# --- Complementaria (como subsección dentro del mismo H2) --- #}
+          {% if profile.formaciones.exists %}
+          <h3 class="subsection">📚 Formación complementaria</h3>
+          <ul>
+            {% for formacion in profile.formaciones.all %}
+            <li>
+              <strong>{{ formacion.get_tipo_display }}:</strong> {{ formacion.nombre }}
+              {% if formacion.entidad %} — {{ formacion.entidad }}{% endif %}
+              {% if formacion.fecha %} ({{ formacion.fecha|date:"Y" }}){% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
+          {% endif %}
+
+          {% if profile.proyectos.exists %}
+          <h2 style="font-size:16px; margin-bottom:8px;">📌 Pinned</h2>
+          <div class="repo-grid">
+
+            {% for proj in profile.proyectos.all %}
+            <div class="repo">
+
+              {# Nombre: clickable si hay link, normal si no #}
+              {% if proj.link %}
+              <a href="{{ proj.link }}" target="_blank" rel="noopener" class="repo-name">📚 {{ proj.nombre }}</a>
+              {% else %}
+              <div class="repo-name">📚 {{ proj.nombre }}</div>
+              {% endif %}
+
+              {# Descripción truncada a 120 caracteres #}
+              {% if proj.descripcion %}
+              <div class="repo-desc">{{ proj.descripcion|truncatechars:120 }}</div>
+              {% endif %}
+
+              {# Tecnologías en la fila inferior (sustituye lenguaje + stars + forks) #}
+              {% if proj.tecnologias %}
+              <div class="repo-meta">
+                <span><span class="lang-dot" style="background:#58a6ff;"></span>{{ proj.tecnologias }}</span>
+              </div>
+              {% endif %}
+
             </div>
-            {% endif %}
+            {% endfor %}
 
           </div>
-          {% endfor %}
+          {% endif %}
 
-        </div>
-        {% endif %}
+          {% if profile.mostrar_logros and profile.logros.exists %}
+          <h2 style="font-size:16px; margin-bottom:8px;">🏆 Logros y reconocimientos</h2>
+          <div class="repo-grid">
 
-        {% if profile.mostrar_logros and profile.logros.exists %}
-        <h2 style="font-size:16px; margin-bottom:8px;">🏆 Logros y reconocimientos</h2>
-        <div class="repo-grid">
+            {% for logro in profile.logros.all %}
+            <div class="repo">
+              <div class="repo-name">
+                {% if logro.tipo == 'premio' %}🏆
+                {% elif logro.tipo == 'merito' %}🎓
+                {% elif logro.tipo == 'evento' %}🎯
+                {% else %}⭐{% endif %}
+                {{ logro.titulo }}
+              </div>
 
-          {% for logro in profile.logros.all %}
-          <div class="repo">
-            <div class="repo-name">
-              {% if logro.tipo == 'premio' %}🏆
-              {% elif logro.tipo == 'merito' %}🎓
-              {% elif logro.tipo == 'evento' %}🎯
-              {% else %}⭐{% endif %}
-              {{ logro.titulo }}
+              {% if logro.descripcion %}
+              <div class="repo-desc">{{ logro.descripcion }}</div>
+              {% endif %}
+
+              <div class="repo-meta">
+                <span>{{ logro.get_tipo_display }}{% if logro.fecha %} · {{ logro.fecha|date:"Y" }}{% endif %}</span>
+              </div>
             </div>
+            {% endfor %}
 
-            {% if logro.descripcion %}
-            <div class="repo-desc">{{ logro.descripcion }}</div>
-            {% endif %}
-
-            <div class="repo-meta">
-              <span>{{ logro.get_tipo_display }}{% if logro.fecha %} · {{ logro.fecha|date:"Y" }}{% endif %}</span>
-            </div>
           </div>
-          {% endfor %}
-
-        </div>
-        {% endif %}
+          {% endif %}
 
 
-        <h2>📊 Stats</h2>
-        <pre>const ernesto = {
-          pronouns: "él",
-          code: ["JavaScript", "TypeScript", "Python", "Go"],
-          tools: ["React", "Node.js", "Docker", "AWS"],
-          challenge: "Construir el mejor producto posible",
-          funFact: "Resuelvo bugs hablando con un patito de goma 🦆"
+          <h2>📊 Stats</h2>
+          <pre>const {{ profile.cv.personal_info.nombre|lower|default:"dev" }} = {
+            proyectos:      {{ profile.proyectos.all|length }},
+            experiencias:   {{ profile.experiencias.all|length }},
+            estudios:       {{ profile.educaciones.all|length }},
+            habilidades:    {{ profile.habilidades.all|length }},
+            idiomas:        {{ profile.idiomas.all|length }},
+            perfil:         "{{ profile.cv.professional_profile.profesion|default:'developer' }}"
           };</pre>
+
+        </div>
       </div>
   </div>
 
@@ -829,7 +835,7 @@
   </div>
   {% endwith %}
 
-  
+
   </main>
   </div>
   <script>
@@ -838,14 +844,30 @@
     for (let i = 0; i < 371; i++) {
       const day = document.createElement('div');
       day.className = 'day';
-      const r = Math.random();
-      if (r < 0.3) day.classList.add('');
-      else if (r < 0.55) day.classList.add('l1');
-      else if (r < 0.75) day.classList.add('l2');
-      else if (r < 0.9) day.classList.add('l3');
+
+      // El grid empieza por columnas. Fila 0 = domingo, fila 6 = sábado.
+      // Como grid-auto-flow:column, el "día de la semana" es i % 7.
+      const dayOfWeek = i % 7;
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+      // En fin de semana, reducimos la probabilidad
+      let r = Math.random();
+      if (isWeekend) r *= 0.4;
+
+      if (r < 0.1) day.classList.add('');
+      else if (r < 0.3) day.classList.add('l1');
+      else if (r < 0.55) day.classList.add('l2');
+      else if (r < 0.8) day.classList.add('l3');
       else day.classList.add('l4');
+
       grid.appendChild(day);
-    }
+}
+
+// Contar cuántas casillas tienen color y mostrar un número creíble
+const filled = grid.querySelectorAll('.day.l1, .day.l2, .day.l3, .day.l4').length;
+const total = Math.round(filled * (3 + Math.random() * 4)); // 3-7 commits por día con actividad
+document.querySelector('.contribution-graph h3').textContent = `${total.toLocaleString()} contributions in the last year`;
+
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
