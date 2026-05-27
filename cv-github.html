@@ -555,7 +555,8 @@
       {% with pp=profile.cv.professional_profile %}
       <div class="tabs">
         <button class="tab active">📖 Overview</button>
-        <button class="tab">📚 Repositories <span class="count">{{ profile.proyectos.all|length }}</span></button>        <button class="tab">📦 Projects <span class="count">12</span></button>
+        <button class="tab">📚 Repositories <span class="count">{{ profile.proyectos.all|length }}</span></button>
+        <button class="tab">📦 Projects <span class="count">12</span></button>
         <button class="tab">📦 Packages</button>
         <button class="tab">⭐ Stars <span class="count">523</span></button>
       </div>
@@ -764,7 +765,33 @@
         </div>
         {% endif %}
 
-        
+        {% if profile.mostrar_logros and profile.logros.exists %}
+        <h2 style="font-size:16px; margin-bottom:8px;">🏆 Logros y reconocimientos</h2>
+        <div class="repo-grid">
+
+          {% for logro in profile.logros.all %}
+          <div class="repo">
+            <div class="repo-name">
+              {% if logro.tipo == 'premio' %}🏆
+              {% elif logro.tipo == 'merito' %}🎓
+              {% elif logro.tipo == 'evento' %}🎯
+              {% else %}⭐{% endif %}
+              {{ logro.titulo }}
+            </div>
+
+            {% if logro.descripcion %}
+            <div class="repo-desc">{{ logro.descripcion }}</div>
+            {% endif %}
+
+            <div class="repo-meta">
+              <span>{{ logro.get_tipo_display }}{% if logro.fecha %} · {{ logro.fecha|date:"Y" }}{% endif %}</span>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+        {% endif %}
+
 
         <h2>📊 Stats</h2>
         <pre>const ernesto = {
@@ -777,12 +804,32 @@
       </div>
   </div>
 
+  {% if profile.mostrar_otros %}
+  {% with oi=profile.cv.other_info %}
+  {% if oi %}
+  <div class="repo" style="margin-top:16px;">
+    <div class="repo-name" style="margin-bottom:12px;">📋 Datos adicionales</div>
+    <div class="repo-meta" style="flex-wrap:wrap; gap:24px;">
+      <span>🏠 Teletrabajo: <strong style="color:#e6edf3;">{{ oi.get_teletrabajo_display }}</strong></span>
+      <span>✈ Viajes: <strong style="color:#e6edf3;">{% if oi.disponibilidad_viajar %}Sí{% else %}No{% endif
+          %}</strong></span>
+      {% if oi.expectativa_salarial %}
+      <span>💰 Salario: <strong style="color:#e6edf3;">{{ oi.expectativa_salarial }}</strong></span>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  {% endwith %}
+  {% endif %}
+
   <div class="contribution-graph">
     <h3 style="font-size:14px; margin-bottom:12px; font-weight:400; color:#7d8590;">2,847 contributions in the last year
     </h3>
     <div class="contribution-grid" id="contribGrid"></div>
   </div>
   {% endwith %}
+
+  
   </main>
   </div>
   <script>
