@@ -1345,10 +1345,10 @@
 
       /* Datos personales — grupo PERSONAL INFO + SOCIAL NETWORKS */
       meta: {
-        name: 'Alex Martínez',
-        initials: 'AM',
-        avatar: 'AM',
-        email: 'alex.martinez@dev.io',
+        name: '{{profile.cv.personal_info.nombre}}',
+        initials: '{{profile.cv.personal_info.nombre}}|slice:":1"{{profile.cv.personal_info.apellidos}}|slice:":1"',
+        avatar: '{{profile.cv.personal_info.foto}}',
+        email: '{{profile.cv.personal_info.email}}',
         phone: '+34 600 123 456',
         linkedin: 'linkedin.com/in/alexmartinez',
         github: 'github.com/alexmdev',

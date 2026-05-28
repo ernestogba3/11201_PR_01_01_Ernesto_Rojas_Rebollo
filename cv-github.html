@@ -5,505 +5,611 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CV - Estilo GitHub</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      line-height: 1.5;
-    }
-
-    .header {
-      background: #010409;
-      border-bottom: 1px solid #30363d;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .header-logo {
-      color: #fff;
-      font-size: 32px;
-    }
-
-    .search {
-      flex: 1;
-      max-width: 400px;
-      background: #0d1117;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      padding: 6px 12px;
-      color: #7d8590;
-      font-size: 14px;
-    }
-
-    .header-actions {
-      margin-left: auto;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      color: #e6edf3;
-      font-size: 14px;
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 24px;
-      display: grid;
-      grid-template-columns: 296px 1fr;
-      gap: 32px;
-    }
-
-    .sidebar {
-      padding-right: 16px;
-    }
-
-    .avatar {
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #58a6ff 0%, #7ee787 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 100px;
-      font-weight: 700;
-      color: #0d1117;
-      margin-bottom: 16px;
-      border: 1px solid #30363d;
-    }
-
-    .name {
-      font-size: 26px;
-      font-weight: 600;
-      line-height: 1.25;
-      color: #e6edf3;
-    }
-
-    .username {
-      font-size: 20px;
-      color: #7d8590;
-      font-weight: 300;
-      margin-bottom: 16px;
-    }
-
-    .bio {
-      font-size: 16px;
-      color: #e6edf3;
-      margin-bottom: 16px;
-    }
-
-    .btn-follow {
-      width: 100%;
-      background: #21262d;
-      border: 1px solid #30363d;
-      color: #e6edf3;
-      padding: 6px 16px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-bottom: 16px;
-      transition: background 0.2s;
-    }
-
-    .btn-follow:hover {
-      background: #30363d;
-    }
-
-    .stats-list {
-      font-size: 14px;
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 0;
-      color: #7d8590;
-    }
-
-    .stat-item strong {
-      color: #e6edf3;
-    }
-
-    .stat-item:hover {
-      color: #58a6ff;
-      cursor: pointer;
-    }
-
-    .main {
-      min-width: 0;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      border-bottom: 1px solid #30363d;
-      margin-bottom: 24px;
-      overflow-x: auto;
-    }
-
-    .tab {
-      padding: 8px 16px;
-      color: #e6edf3;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-size: 14px;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .tab.active {
-      border-bottom-color: #fd8c73;
-      font-weight: 600;
-    }
-
-    .tab .count {
-      background: #30363d;
-      padding: 0 6px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
-
-    .readme {
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      margin-bottom: 16px;
-    }
-
-    .readme-header {
-      background: #161b22;
-      padding: 8px 16px;
-      border-bottom: 1px solid #30363d;
-      font-size: 14px;
-      color: #7d8590;
-    }
-
-    .readme-body {
-      padding: 24px;
-    }
-
-    h1,
-    h2,
-    h3 {
-      color: #e6edf3;
-    }
-
-    .readme h1 {
-      font-size: 32px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #30363d;
-      margin-bottom: 16px;
-    }
-
-    .readme h2 {
-      font-size: 24px;
-      margin-top: 24px;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #30363d;
-    }
-
-    .readme h3 {
-      font-size: 20px;
-      margin-top: 16px;
-      margin-bottom: 8px;
-    }
-
-    .readme p {
-      margin-bottom: 16px;
-      color: #e6edf3;
-    }
-
-    .readme ul {
-      padding-left: 24px;
-      margin-bottom: 16px;
-    }
-
-    .readme li {
-      margin-bottom: 4px;
-    }
-
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 16px;
-    }
-
-    .skill-bar-item {
-      margin-bottom: 12px;
-    }
-
-    .skill-bar-item__name {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: #e6edf3;
-      margin-bottom: 6px;
-    }
-
-    .skill-bar-item__pct {
-      color: #7d8590;
-      font-size: 12px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .skill-bar {
-      background: #21262d;
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      height: 8px;
-      overflow: hidden;
-    }
-
-    .skill-bar__fill {
-      background: linear-gradient(90deg, #2f81f7 0%, #7ee787 100%);
-      height: 100%;
-      border-radius: 6px;
-      transition: width 0.6s ease;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .skill-bar {
-        height: 6px;
-      }
-
-      .skill-bar-item__name {
-        font-size: 12px;
-      }
-    }
-
-    .badge {
-      background: #1f6feb;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 3px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .badge.green {
-      background: #238636;
-    }
-
-    .badge.purple {
-      background: #8957e5;
-    }
-
-    .badge.orange {
-      background: #db6d28;
-    }
-
-    .badge.red {
-      background: #da3633;
-    }
-
-    code,
-    pre {
-      font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-      background: #161b22;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: #e6edf3;
-    }
-
-    pre {
-      padding: 16px;
-      overflow-x: auto;
-      margin-bottom: 16px;
-    }
-
-    .repo-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .repo {
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      padding: 16px;
-    }
-
-    .repo-name {
-      color: #2f81f7;
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 4px;
-      cursor: pointer;
-    }
-
-    .repo-name:hover {
-      text-decoration: underline;
-    }
-
-    .repo-desc {
-      font-size: 12px;
-      color: #7d8590;
-      margin-bottom: 16px;
-    }
-
-    .repo-meta {
-      display: flex;
-      gap: 16px;
-      font-size: 12px;
-      color: #7d8590;
-    }
-
-    .lang-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 4px;
-    }
-
-    .contribution-graph {
-      border: 1px solid #30363d;
-      border-radius: 6px;
-      padding: 16px;
-      margin-top: 16px;
-    }
-
-    .contribution-grid {
-      display: grid;
-      grid-template-columns: repeat(53, 11px);
-      grid-auto-rows: 11px;
-      gap: 3px;
-      grid-auto-flow: column;
-      grid-template-rows: repeat(7, 11px);
-    }
-
-    .day {
-      width: 11px;
-      height: 11px;
-      border-radius: 2px;
-      background: #161b22;
-    }
-
-    .day.l1 {
-      background: #0e4429;
-    }
-
-    .day.l2 {
-      background: #006d32;
-    }
-
-    .day.l3 {
-      background: #26a641;
-    }
-
-    .day.l4 {
-      background: #39d353;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-
-      .avatar {
-        width: 200px;
-        height: 200px;
-        font-size: 70px;
-        margin: 0 auto 16px;
-      }
-
-      .repo-grid {
-        grid-template-columns: 1fr;
-      }
-
-      /* centra los badges en móvil */
-      .badges {
-        justify-content: center;
-      }
-
-      /* ligeramente más pequeños */
-      .badge {
-        font-size: 11px;
-      }
-
-      /* Grid de 3 columnas para los extras (en escritorio).
-   En móvil hereda automáticamente el grid-template-columns: 1fr
-   del media query que ya tienes en .repo-grid */
-      /* En tablet, pasa a 2 columnas para que no se aprieten */
-      @media (max-width: 1024px) {
-        .extras-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      .extras-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .extras-list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-top: 8px;
-      }
-
-      .extras-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-      }
-
-      .extras-item__label {
-        color: #e6edf3;
-        font-weight: 500;
-      }
-
-      .extras-item__value {
-        color: #7d8590;
-        font-size: 12px;
-        text-align: right;
-      }
-
-      .extras-link {
-        color: #2f81f7;
-        text-decoration: none;
-        font-size: 12px;
-      }
-
-      .extras-link:hover {
-        text-decoration: underline;
-      }
-
-
-      .readme h3.subsection {
-        margin-top: 32px;
-        padding-top: 16px;
-        border-top: 1px solid #30363d;
-        color: #7d8590;
-        font-size: 16px;
-        font-weight: 600;
-      }
-
-
-    }
+    /* TEMA OSCURO (por defecto) */
+    /* ============================================
+   TEMAS: variables de color
+   ============================================ */
+
+/* TEMA OSCURO (por defecto) */
+:root {
+  --bg: #0d1117;
+  --bg-secondary: #010409;
+  --bg-card: #161b22;
+  --bg-hover: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #7d8590;
+  --accent: #2f81f7;
+  --accent-soft: #58a6ff;
+}
+
+/* TEMA CLARO (cuando el body tiene class="light") */
+body.light {
+  --bg: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --bg-card: #f6f8fa;
+  --bg-hover: #eaeef2;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-muted: #59636e;
+  --accent: #0969da;
+  --accent-soft: #0969da;
+}
+
+/* ============================================
+   RESET Y BASE
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+.btn-download {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: #238636;
+  border: 1px solid #2ea043;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 16px;
+  text-decoration: none;
+  transition: background 0.2s;
+  box-sizing: border-box;
+}
+
+.btn-download:hover {
+  background: #2ea043;
+}
+
+.btn-follow {
+  width: 100%;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background 0.2s;
+}
+
+.btn-follow:hover {
+  background: var(--border);
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-hover);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-logo {
+  color: var(--text);
+  font-size: 32px;
+}
+
+.search {
+  flex: 1;
+  max-width: 400px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: var(--text);
+  font-size: 14px;
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 296px 1fr;
+  gap: 32px;
+}
+
+.sidebar {
+  padding-right: 16px;
+}
+
+.main {
+  min-width: 0;
+}
+
+/* ============================================
+   SIDEBAR: avatar, nombre, bio, stats
+   ============================================ */
+
+.avatar {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #58a6ff 0%, #7ee787 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+  font-weight: 700;
+  color: #0d1117;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+
+.name {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.username {
+  font-size: 20px;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.bio {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.stats-list {
+  font-size: 14px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  color: var(--text-muted);
+}
+
+.stat-item strong {
+  color: var(--text);
+}
+
+.stat-item:hover {
+  color: var(--accent-soft);
+  cursor: pointer;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 8px 16px;
+  color: var(--text);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab.active {
+  border-bottom-color: #fd8c73;
+  font-weight: 600;
+}
+
+.tab .count {
+  background: var(--border);
+  padding: 0 6px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* ============================================
+   README
+   ============================================ */
+
+.readme {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.readme-header {
+  background: var(--bg-card);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.readme-body {
+  padding: 24px;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--text);
+}
+
+.readme h1 {
+  font-size: 32px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.readme h2 {
+  font-size: 24px;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.readme h3 {
+  font-size: 20px;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.readme p {
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.readme ul {
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+
+.readme li {
+  margin-bottom: 4px;
+}
+
+/* ============================================
+   BADGES (colores fijos en ambos temas)
+   ============================================ */
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.badge {
+  background: #1f6feb;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge.green {
+  background: #238636;
+}
+
+.badge.purple {
+  background: #8957e5;
+}
+
+.badge.orange {
+  background: #db6d28;
+}
+
+.badge.red {
+  background: #da3633;
+}
+
+/* ============================================
+   SKILL BARS
+   ============================================ */
+
+.skill-bar-item {
+  margin-bottom: 12px;
+}
+
+.skill-bar-item__name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.skill-bar-item__pct {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.skill-bar {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.skill-bar__fill {
+  background: linear-gradient(90deg, #2f81f7 0%, #7ee787 100%);
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.6s ease;
+}
+
+/* ============================================
+   CODE Y PRE
+   ============================================ */
+
+code,
+pre {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  background: var(--bg-card);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+pre {
+  padding: 16px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+/* ============================================
+   REPOS / TARJETAS
+   ============================================ */
+
+.repo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.repo {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.repo-name {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.repo-name:hover {
+  text-decoration: underline;
+}
+
+.repo-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.repo-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.lang-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+/* ============================================
+   EXTRAS (idiomas / redes / intereses)
+   A nivel raíz: aplica en escritorio
+   ============================================ */
+
+.extras-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.extras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.extras-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.extras-item__label {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.extras-item__value {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.extras-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.extras-link:hover {
+  text-decoration: underline;
+}
+
+.readme h3.subsection {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ============================================
+   CONTRIBUTION GRAPH
+   (los verdes l1-l4 son fijos: iguales en GitHub claro y oscuro)
+   ============================================ */
+
+.contribution-graph {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.contribution-grid {
+  display: grid;
+  grid-template-columns: repeat(53, 11px);
+  grid-auto-rows: 11px;
+  gap: 3px;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 11px);
+}
+
+.day {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  background: var(--bg-card);
+}
+
+.day.l1 { background: #0e4429; }
+.day.l2 { background: #006d32; }
+.day.l3 { background: #26a641; }
+.day.l4 { background: #39d353; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Tablet: extras pasan a 2 columnas */
+@media (max-width: 1024px) {
+  .extras-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .avatar {
+    width: 200px;
+    height: 200px;
+    font-size: 70px;
+    margin: 0 auto 16px;
+  }
+
+  .repo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .badges {
+    justify-content: center;
+  }
+
+  .badge {
+    font-size: 11px;
+  }
+
+  .skill-bar {
+    height: 6px;
+  }
+
+  .skill-bar-item__name {
+    font-size: 12px;
+  }
+}
   </style>
 </head>
 
@@ -516,6 +622,7 @@
       <span>Issues</span>
       <span>🔔</span>
       <span>+</span>
+      <button id="themeToggle" class="theme-toggle">🌙</button>
     </div>
   </header>
   <div class="container">
@@ -529,6 +636,9 @@
       {% endif %}
 
       <button class="btn-follow">Follow</button>
+      {% if profile.slug %}
+      <button class="btn-download" id="btnPdf">⬇ Descargar CV en PDF</button>
+      {% endif %}
       <div class="stats-list">
         <div class="stat-item">👥<strong>1.2k</strong> fllwrs <strong>284</strong> following</div>
         <div class="stat-item">⭐<strong>523</strong> stars</div>
@@ -548,8 +658,8 @@
         {%endif%}
         <div class="stat-item">🟢<strong>{{profile.cv.personal_info.get_disponibilidad_display}}</strong></div>
         {% if profile.cv.personal_info.carnet_conducir%}
-        <div class="stat-item">🚗<strong>{{profile.cv.personal_info.carnet_conducir}}</strong></div>
-        {%endif%}
+        <div class="stat-item">🚗 <strong>{% if profile.cv.personal_info.carnet_conducir %}Sí{% else %}No{% endif
+            %}</strong></div> {%endif%}
       </div>
     </aside>
 
@@ -574,76 +684,6 @@
             {% endif %}
             {% endfor %}
           </div>
-
-          {# === Bloque final: datos añadidos === #}
-
-          {# Tarjeta de idiomas + redes + intereses en grid #}
-          {% if profile.idiomas.exists or profile.mostrar_redes or profile.mostrar_intereses %}
-          <h2>📎 Más información</h2>
-          <div class="repo-grid extras-grid">
-
-            {# Idiomas #}
-            {% if profile.idiomas.exists %}
-            <div class="repo">
-              <div class="repo-name">🌍 Idiomas</div>
-              <div class="extras-list">
-                {% for lang in profile.idiomas.all %}
-                <div class="extras-item">
-                  <span class="extras-item__label">{{ lang.idioma }}</span>
-                  <span class="extras-item__value">
-                    {{ lang.get_nivel_display }}{% if lang.certificacion %} · {{ lang.certificacion }}{% endif %}
-                  </span>
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-            {% endif %}
-
-            {# Redes sociales #}
-            {% if profile.mostrar_redes %}
-            {% with sn=profile.cv.social_networks %}
-            {% if sn %}
-            <div class="repo">
-              <div class="repo-name">🔗 Encuéntrame</div>
-              <div class="extras-list">
-                {% if sn.linkedin %}
-                <div class="extras-item">
-                  <span class="extras-item__label">in LinkedIn</span>
-                  <a href="{{ sn.linkedin }}" target="_blank" rel="noopener" class="extras-link">Ver perfil ↗</a>
-                </div>
-                {% endif %}
-                {% if sn.github %}
-                <div class="extras-item">
-                  <span class="extras-item__label">🐙 GitHub</span>
-                  <a href="{{ sn.github }}" target="_blank" rel="noopener" class="extras-link">Ver perfil ↗</a>
-                </div>
-                {% endif %}
-                {% if sn.portfolio %}
-                <div class="extras-item">
-                  <span class="extras-item__label">🌐 Portfolio</span>
-                  <a href="{{ sn.portfolio }}" target="_blank" rel="noopener" class="extras-link">Visitar ↗</a>
-                </div>
-                {% endif %}
-              </div>
-            </div>
-            {% endif %}
-            {% endwith %}
-            {% endif %}
-
-            {# Intereses #}
-            {% if profile.mostrar_intereses and profile.intereses.exists %}
-            <div class="repo">
-              <div class="repo-name">🎯 Intereses</div>
-              <div class="badges" style="margin-top:8px;">
-                {% for interes in profile.intereses.all %}
-                <span class="badge {% cycle '' 'purple' 'green' 'orange' 'red' %}">{{ interes.nombre }}</span>
-                {% endfor %}
-              </div>
-            </div>
-            {% endif %}
-          </div>
-          {% endif%}
-
 
           {% if pp.resumen%}
           <p>{{pp.resumen|linebreaksbr}}</p>
@@ -795,50 +835,151 @@
           </div>
           {% endif %}
 
+          {# === Bloque final: datos añadidos === #}
+
+          {# Tarjeta de idiomas + redes + intereses en grid #}
+          {% if profile.idiomas.exists or profile.mostrar_redes or profile.mostrar_intereses %}
+          <h2>📎 Más información</h2>
+          <div class="repo-grid extras-grid">
+
+            {# Idiomas #}
+            {% if profile.idiomas.exists %}
+            <div class="repo">
+              <div class="repo-name">🌍 Idiomas</div>
+              <div class="extras-list">
+                {% for lang in profile.idiomas.all %}
+                <div class="extras-item">
+                  <span class="extras-item__label">{{ lang.idioma }}</span>
+                  <span class="extras-item__value">
+                    {{ lang.get_nivel_display }}{% if lang.certificacion %} · {{ lang.certificacion }}{% endif %}
+                  </span>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+
+            {# Redes sociales #}
+            {% if profile.mostrar_redes %}
+            {% with sn=profile.cv.social_networks %}
+            {% if sn %}
+            <div class="repo">
+              <div class="repo-name">🔗 Encuéntrame</div>
+              <div class="extras-list">
+                {% if sn.linkedin %}
+                <div class="extras-item">
+                  <span class="extras-item__label">in LinkedIn</span>
+                  <a href="{{ sn.linkedin }}" target="_blank" rel="noopener" class="extras-link">Ver perfil ↗</a>
+                </div>
+                {% endif %}
+                {% if sn.github %}
+                <div class="extras-item">
+                  <span class="extras-item__label">🐙 GitHub</span>
+                  <a href="{{ sn.github }}" target="_blank" rel="noopener" class="extras-link">Ver perfil ↗</a>
+                </div>
+                {% endif %}
+                {% if sn.portfolio %}
+                <div class="extras-item">
+                  <span class="extras-item__label">🌐 Portfolio</span>
+                  <a href="{{ sn.portfolio }}" target="_blank" rel="noopener" class="extras-link">Visitar ↗</a>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+            {% endwith %}
+            {% endif %}
+
+            {# Intereses #}
+            {% if profile.mostrar_intereses and profile.intereses.exists %}
+            <div class="repo">
+              <div class="repo-name">🎯 Intereses</div>
+              <div class="badges" style="margin-top:8px;">
+                {% for interes in profile.intereses.all %}
+                <span class="badge {% cycle '' 'purple' 'green' 'orange' 'red' %}">{{ interes.nombre }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          {% endif%}
 
           <h2>📊 Stats</h2>
           <pre>const {{ profile.cv.personal_info.nombre|lower|default:"dev" }} = {
-            proyectos:      {{ profile.proyectos.all|length }},
-            experiencias:   {{ profile.experiencias.all|length }},
-            estudios:       {{ profile.educaciones.all|length }},
-            habilidades:    {{ profile.habilidades.all|length }},
-            idiomas:        {{ profile.idiomas.all|length }},
-            perfil:         "{{ profile.cv.professional_profile.profesion|default:'developer' }}"
+            proyectos:    {{ profile.proyectos.all|length }},
+            experiencias: {{ profile.experiencias.all|length }},
+            estudios:     {{ profile.educaciones.all|length }},
+            habilidades:  {{ profile.habilidades.all|length }},
+            idiomas:      {{ profile.idiomas.all|length }},
+            perfil:       "{{ profile.cv.professional_profile.profesion|default:'developer' }}"
           };</pre>
 
         </div>
       </div>
-  </div>
 
-  {% if profile.mostrar_otros %}
-  {% with oi=profile.cv.other_info %}
-  {% if oi %}
-  <div class="repo" style="margin-top:16px;">
-    <div class="repo-name" style="margin-bottom:12px;">📋 Datos adicionales</div>
-    <div class="repo-meta" style="flex-wrap:wrap; gap:24px;">
-      <span>🏠 Teletrabajo: <strong style="color:#e6edf3;">{{ oi.get_teletrabajo_display }}</strong></span>
-      <span>✈ Viajes: <strong style="color:#e6edf3;">{% if oi.disponibilidad_viajar %}Sí{% else %}No{% endif
-          %}</strong></span>
-      {% if oi.expectativa_salarial %}
-      <span>💰 Salario: <strong style="color:#e6edf3;">{{ oi.expectativa_salarial }}</strong></span>
+      {% if profile.mostrar_otros %}
+      {% with oi=profile.cv.other_info %}
+      {% if oi %}
+      <div class="repo" style="margin-top:16px;">
+        <div class="repo-name" style="margin-bottom:12px;">📋 Datos adicionales</div>
+        <div class="repo-meta" style="flex-wrap:wrap; gap:24px;">
+          <span>🏠 Teletrabajo: <strong style="color:var(--text);">{{ oi.get_teletrabajo_display }}</strong></span>
+          <span>✈ Viajes: <strong style="color:var(--text);">{% if oi.disponibilidad_viajar %}Sí{% else %}No{% endif
+              %}</strong></span>
+          {% if oi.expectativa_salarial %}
+          <span>💰 Salario: <strong style="color:var(--text);">{{ oi.expectativa_salarial }}</strong></span>
+          {% endif %}
+        </div>
+      </div>
       {% endif %}
-    </div>
-  </div>
-  {% endif %}
-  {% endwith %}
-  {% endif %}
-
-  <div class="contribution-graph">
-    <h3 style="font-size:14px; margin-bottom:12px; font-weight:400; color:#7d8590;">2,847 contributions in the last year
-    </h3>
-    <div class="contribution-grid" id="contribGrid"></div>
-  </div>
-  {% endwith %}
+      <div class="contribution-graph">
+        <h3 style="font-size:14px; margin-bottom:12px; font-weight:400; color:#7d8590;">2,847 contributions in the last
+          year
+        </h3>
+        <div class="contribution-grid" id="contribGrid"></div>
+      </div>
 
 
-  </main>
+      {% endwith %}
+
+
+    </main>
   </div>
   <script>
+
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      const esClaro = document.body.classList.contains('light');
+      themeToggle.textContent = esClaro ? '☀' : '🌙';
+    });
+
+
+    // Descargar el CV como PDF (captura lo que se ve en pantalla)
+    // Descargar el CV como PDF (captura lo que se ve en pantalla)
+const btnPdf = document.getElementById('btnPdf');
+if (btnPdf) {
+  btnPdf.addEventListener('click', () => {
+    const elemento = document.querySelector('.container');
+    btnPdf.style.display = 'none';
+
+    const esClaro = document.body.classList.contains('light');
+    const fondo = esClaro ? '#ffffff' : '#0d1117';
+
+    const opciones = {
+      margin: 10,
+      filename: 'mi-cv.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, backgroundColor: fondo },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opciones).from(elemento).save().then(() => {
+      btnPdf.style.display = 'block';
+    });
+  });
+}
+
     // Generar contribution graph
     const grid = document.getElementById('contribGrid');
     for (let i = 0; i < 371; i++) {
@@ -861,12 +1002,12 @@
       else day.classList.add('l4');
 
       grid.appendChild(day);
-}
+    }
 
-// Contar cuántas casillas tienen color y mostrar un número creíble
-const filled = grid.querySelectorAll('.day.l1, .day.l2, .day.l3, .day.l4').length;
-const total = Math.round(filled * (3 + Math.random() * 4)); // 3-7 commits por día con actividad
-document.querySelector('.contribution-graph h3').textContent = `${total.toLocaleString()} contributions in the last year`;
+    // Contar cuántas casillas tienen color y mostrar un número creíble
+    const filled = grid.querySelectorAll('.day.l1, .day.l2, .day.l3, .day.l4').length;
+    const total = Math.round(filled * (3 + Math.random() * 4)); // 3-7 commits por día con actividad
+    document.querySelector('.contribution-graph h3').textContent = `${total.toLocaleString()} contributions in the last year`;
 
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
@@ -879,10 +1020,10 @@ document.querySelector('.contribution-graph h3').textContent = `${total.toLocale
     const followBtn = document.querySelector('.btn-follow');
     let following = false;
     followBtn.addEventListener('click', () => {
-      following = !following;
-      followBtn.textContent = following ? '✓ Following' : 'Follow';
-      followBtn.style.background = following ? '#238636' : '#21262d';
-    });
+    following = !following;
+    followBtn.textContent = following ? '✓ Following' : 'Follow';
+    followBtn.style.background = following ? '#238636' : '';  // '' vuelve al CSS
+  });
   </script>
 </body>
 
