@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from datetime import datetime
 
 
 def get_cv_data():
@@ -40,8 +41,8 @@ def get_cv_data():
                 "company": "Pixel Studio",
                 "empresa": "Pixel Studio",
                 "ubicacion": "Barcelona",
-                "fecha_inicio": "2021-02-01",
-                "fecha_fin": "2022-08-30",
+                "fecha_inicio": datetime.strptime("2021-02-01", "%Y-%m-%d").date(),
+                "fecha_fin": datetime.strptime("2022-08-30", "%Y-%m-%d").date(),
                 "trabajo_actual": False,
                 "descripcion": "Desarrollo de componentes UI y optimizacion de experiencia en aplicaciones SPA.",
                 "logros": "Reduccion del tiempo de carga en 35% y mejora de accesibilidad AA.",
@@ -53,8 +54,8 @@ def get_cv_data():
                 "company": "DataCloud",
                 "empresa": "DataCloud",
                 "ubicacion": "Remoto",
-                "fecha_inicio": "2022-09-01",
-                "fecha_fin": "2024-01-15",
+                "fecha_inicio": datetime.strptime("2022-09-01", "%Y-%m-%d").date(),
+                "fecha_fin": datetime.strptime("2024-01-15", "%Y-%m-%d").date(),
                 "trabajo_actual": False,
                 "descripcion": "Diseno e implementacion de APIs REST y procesamiento de datos en segundo plano.",
                 "logros": "Disminucion de errores en produccion en 42% con observabilidad y testing.",
@@ -66,7 +67,7 @@ def get_cv_data():
                 "company": "NTEC AI Lab",
                 "empresa": "NTEC AI Lab",
                 "ubicacion": "Madrid",
-                "fecha_inicio": "2024-02-01",
+                "fecha_inicio": datetime.strptime("2024-02-01", "%Y-%m-%d").date(),
                 "fecha_fin": None,
                 "trabajo_actual": True,
                 "descripcion": "Integracion de modelos NLP y agentes para automatizar analisis y soporte interno.",
@@ -80,8 +81,8 @@ def get_cv_data():
                 "titulo": "Ingenieria Electrica",
                 "centro": "Universidad Tecnologica",
                 "ubicacion": "Valencia",
-                "fecha_inicio": "1991-01-01",
-                "fecha_fin": "1996-12-31",
+                "fecha_inicio": datetime.strptime("1991-01-01", "%Y-%m-%d").date(),
+                "fecha_fin": datetime.strptime("1996-12-31", "%Y-%m-%d").date(),
                 "en_curso": False,
                 "orden": 1,
             },
@@ -90,8 +91,8 @@ def get_cv_data():
                 "titulo": "Bioinformatico",
                 "centro": "Instituto Superior de Biociencias",
                 "ubicacion": "Barcelona",
-                "fecha_inicio": "2019-01-01",
-                "fecha_fin": "2020-12-31",
+                "fecha_inicio": datetime.strptime("2019-01-01", "%Y-%m-%d").date(),
+                "fecha_fin": datetime.strptime("2020-12-31", "%Y-%m-%d").date(),
                 "en_curso": False,
                 "orden": 2,
             }
@@ -102,7 +103,7 @@ def get_cv_data():
                 "tipo": "Curso",
                 "nombre": "Django REST Framework",
                 "entidad": "Platzi",
-                "fecha": "2024-11-20",
+                "fecha": datetime.strptime("2024-11-20", "%Y-%m-%d").date(),
                 "descripcion": "Diseno y desarrollo de APIs REST.",
                 "orden": 1,
             },
@@ -111,7 +112,7 @@ def get_cv_data():
                 "tipo": "Bootcamp",
                 "nombre": "Frontend avanzado con React",
                 "entidad": "KeepCoding",
-                "fecha": "2023-06-10",
+                "fecha": datetime.strptime("2023-06-10", "%Y-%m-%d").date(),
                 "descripcion": "Arquitectura frontend, testing y performance web.",
                 "orden": 2,
             },
@@ -120,7 +121,7 @@ def get_cv_data():
                 "tipo": "Certificacion",
                 "nombre": "Machine Learning Engineer",
                 "entidad": "Coursera",
-                "fecha": "2025-03-15",
+                "fecha": datetime.strptime("2025-03-15", "%Y-%m-%d").date(),
                 "descripcion": "Modelado supervisado, MLOps basico e integracion en productos.",
                 "orden": 3,
             },
@@ -129,7 +130,7 @@ def get_cv_data():
                 "tipo": "Taller",
                 "nombre": "Arquitectura de microservicios",
                 "entidad": "NTEC Academy",
-                "fecha": "2024-09-12",
+                "fecha": datetime.strptime("2024-09-12", "%Y-%m-%d").date(),
                 "descripcion": "Patrones de resiliencia, colas y escalado horizontal.",
                 "orden": 4,
             }
@@ -239,7 +240,7 @@ def get_cv_data():
                 "titulo": "Top Performer",
                 "tipo": "Reconocimiento",
                 "descripcion": "Reconocimiento por impacto en proyecto interno.",
-                "fecha": "2025-12-10",
+                "fecha": datetime.strptime("2025-12-10", "%Y-%m-%d").date(),
                 "orden": 1,
             },
             {
@@ -247,7 +248,7 @@ def get_cv_data():
                 "titulo": "Premio Innovacion IA",
                 "tipo": "Premio",
                 "descripcion": "Desarrollo de asistente inteligente para operaciones internas.",
-                "fecha": "2025-06-01",
+                "fecha": datetime.strptime("2025-06-01", "%Y-%m-%d").date(),
                 "orden": 2,
             },
             {
@@ -255,7 +256,7 @@ def get_cv_data():
                 "titulo": "Speaker en conferencia Tech",
                 "tipo": "Conferencia",
                 "descripcion": "Ponencia sobre arquitectura full stack y IA aplicada.",
-                "fecha": "2024-10-22",
+                "fecha": datetime.strptime("2024-10-22", "%Y-%m-%d").date(),
                 "orden": 3,
             },
             {
@@ -263,7 +264,7 @@ def get_cv_data():
                 "titulo": "Mejora continua de plataforma",
                 "tipo": "Impacto",
                 "descripcion": "Reduccion de latencia media en 40% en servicios criticos.",
-                "fecha": "2023-11-05",
+                "fecha": datetime.strptime("2023-11-05", "%Y-%m-%d").date(),
                 "orden": 4,
             }
         ],
@@ -273,7 +274,7 @@ def get_cv_data():
                 "organizacion": "Code for Good",
                 "funcion": "Mentora",
                 "impacto": "Formacion basica en programacion para jovenes.",
-                "fecha_inicio": "2024-01-01",
+                "fecha_inicio": datetime.strptime("2024-01-01", "%Y-%m-%d").date(),
                 "fecha_fin": None,
                 "en_curso": True,
                 "orden": 1,
@@ -283,8 +284,8 @@ def get_cv_data():
                 "organizacion": "Banco de Alimentos",
                 "funcion": "Coordinadora digital",
                 "impacto": "Digitalizacion del registro de entregas y voluntarios.",
-                "fecha_inicio": "2022-03-01",
-                "fecha_fin": "2023-12-20",
+                "fecha_inicio": datetime.strptime("2022-03-01", "%Y-%m-%d").date(),
+                "fecha_fin": datetime.strptime("2023-12-20", "%Y-%m-%d").date(),
                 "en_curso": False,
                 "orden": 2,
             },
@@ -293,7 +294,7 @@ def get_cv_data():
                 "organizacion": "Mujeres en STEAM",
                 "funcion": "Facilitadora",
                 "impacto": "Talleres de orientacion profesional para estudiantes.",
-                "fecha_inicio": "2021-05-10",
+                "fecha_inicio": datetime.strptime("2021-05-10", "%Y-%m-%d").date(),
                 "fecha_fin": None,
                 "en_curso": True,
                 "orden": 3,
@@ -339,7 +340,6 @@ def get_cv_data():
 
 
 def cv_view(request):
-
     cv = get_cv_data()
     context = {
         "cv": {

@@ -1,1146 +1,1911 @@
+</html>
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CV - Estilo GitHub</title>
+  <title id="page-title">CV — IT Developer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    /* ============================================
-       TEMAS: variables de color
-       ============================================ */
-
-    /* TEMA OSCURO (por defecto) */
+    /* ── VARIABLES ── */
     :root {
-      --bg: #0d1117;
-      --bg-secondary: #010409;
-      --bg-card: #161b22;
-      --bg-hover: #21262d;
-      --border: #30363d;
-      --text: #e6edf3;
-      --text-muted: #7d8590;
-      --accent: #2f81f7;
-      --accent-soft: #58a6ff;
+      --bg0: #080d14;
+      --bg1: #0f1623;
+      --bg2: #18202e;
+      --t1: #e2e8f0;
+      --t2: #8899aa;
+      --a1: #00d4ff;
+      --a2: #7c3aed;
+      --a3: #10b981;
+      --border: rgba(0, 212, 255, .18);
+      --glow: 0 0 22px rgba(0, 212, 255, .28);
+      --r: 10px;
+      --trans: .3s ease;
     }
 
-    /* TEMA CLARO */
-    body.light {
-      --bg: #ffffff;
-      --bg-secondary: #f6f8fa;
-      --bg-card: #f6f8fa;
-      --bg-hover: #eaeef2;
-      --border: #d0d7de;
-      --text: #1f2328;
-      --text-muted: #59636e;
-      --accent: #0969da;
-      --accent-soft: #0969da;
+    [data-theme="light"] {
+      --bg0: #f0f4f8;
+      --bg1: #e8edf3;
+      --bg2: #ffffff;
+      --t1: #1a2535;
+      --t2: #556070;
+      --a1: #0077cc;
+      --a2: #6d28d9;
+      --a3: #059669;
+      --border: rgba(0, 119, 204, .18);
+      --glow: 0 0 22px rgba(0, 119, 204, .2);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      transition: background 0.3s, color 0.3s;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg0);
+      color: var(--t1);
+      overflow-x: hidden;
+      transition: background var(--trans), color var(--trans)
     }
 
-    /* BOTONES */
-    .btn-download {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background: #238636;
-      border: 1px solid #2ea043;
-      color: #fff;
-      padding: 6px 16px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-bottom: 16px;
-      text-decoration: none;
-      transition: background 0.2s;
-      box-sizing: border-box;
+    ::-webkit-scrollbar {
+      width: 5px
     }
 
-    .btn-download:hover {
-      background: #2ea043;
+    ::-webkit-scrollbar-track {
+      background: var(--bg1)
     }
 
-    .btn-follow {
-      width: 100%;
-      background: var(--bg-hover);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 6px 16px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-bottom: 16px;
-      transition: background 0.2s;
+    ::-webkit-scrollbar-thumb {
+      background: var(--a1);
+      border-radius: 3px
     }
 
-    .btn-follow:hover {
-      background: var(--border);
+    #rain {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: .06;
+      pointer-events: none
     }
 
-    .theme-toggle {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 6px;
-      padding: 4px 10px;
-      cursor: pointer;
-      font-size: 16px;
+    #pts {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden
     }
 
-    .theme-toggle:hover {
-      background: var(--bg-hover);
-    }
-
-    /* HEADER */
-    .header {
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .header-logo {
-      color: var(--text);
-      font-size: 32px;
-    }
-
-    .search {
-      flex: 1;
-      max-width: 400px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 6px 12px;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    .header-actions {
-      margin-left: auto;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      color: var(--text);
-      font-size: 14px;
-    }
-
-    /* LAYOUT */
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 24px;
-      display: grid;
-      grid-template-columns: 296px 1fr;
-      gap: 32px;
-    }
-
-    .sidebar {
-      padding-right: 16px;
-      position: sticky;
-      top: 24px;
-      align-self: start;
-      max-height: calc(100vh - 48px);
-      overflow-y: auto;
-
-      overscroll-behavior: contain;
-      scroll-behavior: smooth;
-
-      /* Ocultar scrollbar manteniendo funcionalidad */
-      scrollbar-width: none;
-      /* Firefox */
-      -ms-overflow-style: none;
-      /* IE/Edge antiguo */
-    }
-
-    /* Ocultar scrollbar en Chrome/Safari/Edge moderno */
-    .sidebar::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Scrollbar en Chrome/Edge */
-
-    .sidebar::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 3px;
-    }
-
-    .sidebar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .main {
-      min-width: 0;
-    }
-
-    /* SIDEBAR */
-    .avatar {
-      width: 100%;
-      max-width: 240px;
-      aspect-ratio: 1 / 1;
+    .pt {
+      position: absolute;
       border-radius: 50%;
-      background: linear-gradient(135deg, #58a6ff 0%, #7ee787 100%);
+      animation: rise linear infinite;
+      opacity: 0
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0
+      }
+
+      10% {
+        opacity: .5
+      }
+
+      90% {
+        opacity: .5
+      }
+
+      100% {
+        transform: translateY(-10vh) translateX(var(--dx));
+        opacity: 0
+      }
+    }
+
+    #prog {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--a1), var(--a2));
+      z-index: 900;
+      transition: width .1s
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 50px;
+      background: rgba(8, 13, 20, .82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem
+    }
+
+    @media(min-width:769px) {
+      nav { height: 60px; padding: 0 2rem }
+    }
+
+    [data-theme="light"] nav {
+      background: rgba(240, 244, 248, .85)
+    }
+
+    .logo {
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--a1);
+      letter-spacing: 1px
+    }
+
+    @media(min-width:769px) {
+      .logo { font-size: 1.15rem; letter-spacing: 2px }
+    }
+
+    .nav-ul {
+      display: flex;
+      gap: 1rem;
+      list-style: none
+    }
+
+    @media(min-width:769px) {
+      .nav-ul { gap: 1.4rem }
+    }
+
+    .nav-ul a {
+      color: var(--t2);
+      text-decoration: none;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color var(--trans);
+      position: relative;
+      padding-bottom: 4px
+    }
+
+    .nav-ul a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--a1);
+      border-radius: 1px;
+      transition: width var(--trans)
+    }
+
+    .nav-ul a:hover,
+    .nav-ul a.active {
+      color: var(--a1)
+    }
+
+    .nav-ul a:hover::after,
+    .nav-ul a.active::after {
+      width: 100%
+    }
+
+    .nav-r {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem
+    }
+
+    @media(min-width:769px) {
+      .nav-r { gap: 0.75rem }
+    }
+
+    .tbtn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      color: var(--a1);
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(50px, 12vw, 90px);
-      font-weight: 700;
-      color: #0d1117;
-      margin: 0 auto 16px;
-      border: 1px solid var(--border);
-      overflow: hidden;
+      transition: all var(--trans);
+      flex-shrink: 0
     }
 
-    .avatar img {
+    @media(min-width:769px) {
+      .tbtn { width: 35px; height: 35px }
+    }
+
+    .tbtn:hover {
+      background: var(--a1);
+      color: #000;
+      box-shadow: var(--glow)
+    }
+
+    .dlbtn {
+      background: linear-gradient(135deg, var(--a1), var(--a2));
+      border: none;
+      border-radius: 16px;
+      padding: 6px 12px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--trans);
+      white-space: nowrap
+    }
+
+    .dlbtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(0, 212, 255, .4)
+    }
+
+    .dlbtn.busy {
+      opacity: .65;
+      cursor: wait;
+      pointer-events: none
+    }
+
+    .hbg {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px
+    }
+
+    .hbg span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--a1);
+      border-radius: 1px;
+      transition: all var(--trans)
+    }
+
+    .hbg.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg)
+    }
+
+    .hbg.open span:nth-child(2) {
+      opacity: 0
+    }
+
+    .hbg.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg)
+    }
+
+    main {
+      padding-top: 60px;
+      position: relative;
+      z-index: 1
+    }
+
+    section {
+      padding: 40px 1rem;
+      max-width: 1080px;
+      margin: 0 auto
+    }
+
+    @media(min-width:481px) {
+      section { padding: 60px 1.5rem }
+    }
+
+    @media(min-width:769px) {
+      section { padding: 80px 2rem }
+    }
+
+    .sh {
+      font-size: 1.9rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      position: relative;
+      margin-bottom: .5rem
+    }
+
+    .sh .ico {
+      color: var(--a1)
+    }
+
+    .sh::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 54px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--a1), transparent);
+      border-radius: 2px
+    }
+
+    .sdiv {
+      height: 1px;
+      background: var(--border);
+      margin: 1.6rem 0 3rem
+    }
+
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      max-width: none
+    }
+
+    .hero-w {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 3rem;
+      align-items: center
+    }
+
+    .htag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 212, 255, .08);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: .78rem;
+      color: var(--a1);
+      margin-bottom: 1.4rem;
+      font-family: 'Courier New', monospace
+    }
+
+    .dot-pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--a3);
+      border-radius: 50%;
+      animation: pulse 2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .4;
+        transform: scale(.75)
+      }
+    }
+
+    .hname {
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: .5rem
+    }
+
+    .glitch {
+      position: relative;
+      color: var(--t1)
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%
+    }
+
+    .glitch::before {
+      color: var(--a1);
+      animation: g1 4s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%)
+    }
+
+    .glitch::after {
+      color: var(--a2);
+      animation: g2 4s infinite;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%)
+    }
+
+    @keyframes g1 {
+
+      0%,
+      88%,
+      100% {
+        transform: translateX(0);
+        opacity: 0
+      }
+
+      90% {
+        transform: translateX(-3px);
+        opacity: .8
+      }
+
+      93% {
+        transform: translateX(3px);
+        opacity: .8
+      }
+
+      96% {
+        transform: translateX(0);
+        opacity: 0
+      }
+    }
+
+    @keyframes g2 {
+
+      0%,
+      84%,
+      100% {
+        transform: translateX(0);
+        opacity: 0
+      }
+
+      86% {
+        transform: translateX(3px);
+        opacity: .8
+      }
+
+      89% {
+        transform: translateX(-3px);
+        opacity: .8
+      }
+
+      92% {
+        transform: translateX(0);
+        opacity: 0
+      }
+    }
+
+    .hrole {
+      font-size: clamp(.95rem, 2.2vw, 1.3rem);
+      color: var(--a1);
+      font-family: 'Courier New', monospace;
+      height: 2rem;
+      margin-bottom: 1.4rem
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--a1);
+      margin-left: 2px;
+      animation: blink .7s infinite;
+      vertical-align: text-bottom
+    }
+
+    @keyframes blink {
+
+      0%,
+      49% {
+        opacity: 1
+      }
+
+      50%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .hdesc {
+      font-size: .97rem;
+      color: var(--t2);
+      line-height: 1.85;
+      max-width: 500px;
+      margin-bottom: 2rem
+    }
+
+    .hcta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap
+    }
+
+    .btn-p {
+      background: linear-gradient(135deg, var(--a1), #0060aa);
+      color: #fff;
+      border: none;
+      padding: 11px 26px;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all var(--trans)
+    }
+
+    .btn-p:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(0, 212, 255, .4)
+    }
+
+    .btn-o {
+      background: transparent;
+      color: var(--a1);
+      border: 1px solid var(--a1);
+      padding: 11px 26px;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all var(--trans)
+    }
+
+    .btn-o:hover {
+      background: rgba(0, 212, 255, .1);
+      transform: translateY(-3px)
+    }
+
+    .hstats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap
+    }
+
+    .stat-n {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--a1);
+      display: block;
+      font-family: 'Courier New', monospace;
+      line-height: 1
+    }
+
+    .stat-l {
+      font-size: .72rem;
+      color: var(--t2);
+      text-transform: uppercase;
+      letter-spacing: 1px
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      flex-shrink: 0
+    }
+
+    .aring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid var(--a1);
+      animation: spin 8s linear infinite;
+      opacity: .4
+    }
+
+    .aring2 {
+      inset: -14px;
+      border-color: var(--a2);
+      opacity: .25;
+      animation: spin 13s linear infinite reverse;
+      border-style: dashed
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0)
+      }
+
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .avar {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: top;
-      /* preserva la cara cuando hay recorte */
-    }
-
-    .name {
-      font-size: 26px;
-      font-weight: 600;
-      line-height: 1.25;
-      color: var(--text);
-    }
-
-    .username {
-      font-size: 20px;
-      color: var(--text-muted);
-      font-weight: 300;
-      margin-bottom: 16px;
-    }
-
-    .bio {
-      font-size: 16px;
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    .stats-list {
-      font-size: 14px;
-    }
-
-    .stat-item {
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--a1), var(--a2));
+      background-size: cover;
+      background-position: center;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 0;
-      color: var(--text-muted);
+      justify-content: center;
+      font-size: 4.5rem;
+      box-shadow: 0 0 40px rgba(0, 212, 255, .3);
+      overflow: hidden;
+      position: relative
     }
 
-    .stat-item strong {
-      color: var(--text);
+    .avar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .12), transparent);
+      border-radius: 50%
     }
 
-    .stat-item:hover {
-      color: var(--accent-soft);
-      cursor: pointer;
-    }
-
-    /* TABS */
-    .tabs {
-      display: flex;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
-      overflow-x: auto;
-
-      /* Ocultar la scrollbar horizontal */
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    .tabs::-webkit-scrollbar {
-      display: none;
-    }
-
-    .tab {
-      padding: 8px 16px;
-      color: var(--text);
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-size: 14px;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .tab.active {
-      border-bottom-color: #fd8c73;
-      font-weight: 600;
-    }
-
-    .tab .count {
-      background: var(--border);
-      padding: 0 6px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
-
-    /* README */
-    .readme {
+    .card {
+      background: var(--bg2);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-bottom: 16px;
+      border-radius: var(--r);
+      padding: 1.4rem;
+      transition: all var(--trans);
+      position: relative;
+      overflow: hidden
     }
 
-    .readme-header {
-      background: var(--bg-card);
-      padding: 8px 16px;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      color: var(--text-muted);
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--a1), var(--a2));
+      transform: scaleX(0);
+      transition: transform var(--trans)
     }
 
-    .readme-body {
-      padding: 24px;
+    .card:hover::before {
+      transform: scaleX(1)
     }
 
-    h1,
-    h2,
-    h3 {
-      color: var(--text);
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .35), var(--glow);
+      border-color: rgba(0, 212, 255, .4)
     }
 
-    .readme h1 {
-      font-size: 32px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 16px;
+    .fi {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease
     }
 
-    .readme h2 {
-      font-size: 24px;
-      margin-top: 24px;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+    .fi.on {
+      opacity: 1;
+      transform: translateY(0)
     }
 
-    .readme h3 {
-      font-size: 20px;
-      margin-top: 16px;
-      margin-bottom: 8px;
+    .fi-l {
+      opacity: 0;
+      transform: translateX(-28px);
+      transition: opacity .6s ease, transform .6s ease
     }
 
-    .readme p {
-      margin-bottom: 16px;
-      color: var(--text);
+    .fi-l.on {
+      opacity: 1;
+      transform: translateX(0)
     }
 
-    .readme ul {
-      padding-left: 24px;
-      margin-bottom: 16px;
+    .about-g {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem
     }
 
-    .readme li {
-      margin-bottom: 4px;
+    @media(min-width:769px) {
+      .about-g { grid-template-columns: 1fr 1fr; gap: 2rem }
     }
 
-    /* BADGES */
+    .about-g {
+      align-items: start
+    }
+
+    .atext {
+      font-size: .95rem;
+      color: var(--t2);
+      line-height: 1.85
+    }
+
+    .atext p {
+      margin-bottom: .9rem
+    }
+
+    .hl {
+      color: var(--a1);
+      font-weight: 600
+    }
+
     .badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 16px;
+      gap: .45rem;
+      margin-top: 1.2rem
     }
 
     .badge {
-      background: #1f6feb;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 3px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .badge.green {
-      background: #238636;
-    }
-
-    .badge.purple {
-      background: #8957e5;
-    }
-
-    .badge.orange {
-      background: #db6d28;
-    }
-
-    .badge.red {
-      background: #da3633;
-    }
-
-    /* SKILL BARS */
-    .skill-bar-item {
-      margin-bottom: 12px;
-    }
-
-    .skill-bar-item__name {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .skill-bar-item__pct {
-      color: var(--text-muted);
-      font-size: 12px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .skill-bar {
-      background: var(--bg-hover);
+      background: rgba(0, 212, 255, .08);
       border: 1px solid var(--border);
       border-radius: 6px;
-      height: 8px;
-      overflow: hidden;
+      padding: 3px 11px;
+      font-size: .78rem;
+      color: var(--t2);
+      transition: all var(--trans);
+      cursor: default;
+      font-family: 'Courier New', monospace
     }
 
-    .skill-bar__fill {
-      background: linear-gradient(90deg, #2f81f7 0%, #7ee787 100%);
-      height: 100%;
-      border-radius: 6px;
-      transition: width 0.6s ease;
+    .badge:hover {
+      background: rgba(0, 212, 255, .2);
+      color: var(--a1);
+      border-color: var(--a1);
+      transform: translateY(-2px)
     }
 
-    /* CODE */
-    code,
-    pre {
-      font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-      background: var(--bg-card);
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    pre {
-      padding: 16px;
-      overflow-x: auto;
-      margin-bottom: 16px;
-    }
-
-    /* REPOS / TARJETAS */
-    .repo-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .repo {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px;
-    }
-
-    .repo-name {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 4px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .repo-name:hover {
-      text-decoration: underline;
-    }
-
-    .repo-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-
-    .repo-meta {
-      display: flex;
-      gap: 16px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .lang-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      display: inline-block;
-      margin-right: 4px;
-    }
-
-    /* EXTRAS */
-    .extras-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .extras-list {
+    .ilist {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-top: 8px;
+      gap: .75rem
     }
 
-    .extras-item {
+    .iitem {
+      display: flex;
+      align-items: flex-start;
+      gap: .9rem;
+      padding: .75rem 1rem;
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color var(--trans)
+    }
+
+    .iitem:hover {
+      border-color: var(--a1)
+    }
+
+    .iico {
+      color: var(--a1);
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 2px
+    }
+
+    .ilbl {
+      font-size: .7rem;
+      color: var(--t2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block
+    }
+
+    .ival {
+      font-size: .88rem;
+      font-weight: 600
+    }
+
+    .sk-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem
+    }
+
+    @media(min-width:481px) {
+      .sk-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem }
+    }
+
+    @media(min-width:769px) {
+      .sk-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.6rem }
+    }
+
+    .sk-cat-t {
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--a1);
+      margin-bottom: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem
+    }
+
+    .sbc {
+      margin-bottom: .9rem
+    }
+
+    .sbh {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      margin-bottom: 5px
     }
 
-    .extras-item__label {
-      color: var(--text);
-      font-weight: 500;
+    .sbn {
+      font-size: .88rem
     }
 
-    .extras-item__value {
-      color: var(--text-muted);
-      font-size: 12px;
-      text-align: right;
+    .sbp {
+      font-size: .78rem;
+      color: var(--a1);
+      font-family: 'Courier New', monospace
     }
 
-    .extras-link {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 12px;
+    .sb {
+      height: 5px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 3px;
+      overflow: hidden
     }
 
-    .extras-link:hover {
-      text-decoration: underline;
+    [data-theme="light"] .sb {
+      background: rgba(0, 0, 0, .08)
     }
 
-    .readme h3.subsection {
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      color: var(--text-muted);
-      font-size: 16px;
-      font-weight: 600;
+    .sbf {
+      height: 100%;
+      width: 0;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--a1), var(--a2));
+      position: relative;
+      transition: width 1.4s cubic-bezier(.25, .46, .45, .94)
     }
 
-    /* CONTRIBUTION GRAPH */
-    .contribution-graph {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px;
-      margin-top: 16px;
-    }
-
-    .contribution-grid {
-      display: grid;
-      grid-template-columns: repeat(53, 11px);
-      grid-auto-rows: 11px;
-      gap: 3px;
-      grid-auto-flow: column;
-      grid-template-rows: repeat(7, 11px);
-    }
-
-    .day {
-      width: 11px;
-      height: 11px;
+    .sbf::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 100%;
+      background: #fff;
       border-radius: 2px;
-      background: var(--bg-card);
+      opacity: .7
     }
 
-    .day.l1 {
-      background: #0e4429;
+    .tl {
+      position: relative;
+      padding-left: 2rem
     }
 
-    .day.l2 {
-      background: #006d32;
+    .tl::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--a1), var(--a2), transparent)
     }
 
-    .day.l3 {
-      background: #26a641;
+    .tli {
+      position: relative;
+      margin-bottom: 2rem
     }
 
-    .day.l4 {
-      background: #39d353;
+    .tldot {
+      position: absolute;
+      left: -2.42rem;
+      top: 8px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--a1);
+      border: 2px solid var(--bg0);
+      box-shadow: 0 0 10px var(--a1);
+      z-index: 1
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 1024px) {
-      .extras-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .tlh {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: .4rem;
+      margin-bottom: .35rem
     }
 
-    @media (max-width: 768px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-
-      .avatar {
-        max-width: 180px;
-      }
-
-      .repo-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .badges {
-        justify-content: center;
-      }
-
-      .badge {
-        font-size: 11px;
-      }
-
-      .skill-bar {
-        height: 6px;
-      }
-
-      .skill-bar-item__name {
-        font-size: 12px;
-      }
-
-      .sidebar {
-        position: static;
-        max-height: none;
-        overflow-y: visible;
-      }
+    .jt {
+      font-size: 1.05rem;
+      font-weight: 700
     }
 
-    /* === Estilos para impresión / PDF === */
-@media print {
-  /* Forzar colores oscuros en impresión */
-  @page {
-    size: A4;
-    margin: 10mm;
-  }
-}
+    .jp {
+      font-size: .77rem;
+      color: var(--a1);
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 212, 255, .1);
+      padding: 2px 10px;
+      border-radius: 20px
+    }
 
-  /* Asegurar que los colores de fondo se imprimen */
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    color-adjust: exact !important;
-  }
+    .jc {
+      font-size: .85rem;
+      color: var(--a2);
+      margin-bottom: .6rem
+    }
 
-  body {
-    background: #0d1117 !important;
-  }
+    .jd {
+      color: var(--t2);
+      font-size: .88rem;
+      line-height: 1.7;
+      margin-bottom: .6rem
+    }
 
-  /* Ocultar elementos que no aportan en el PDF */
-  .header,
-  .tabs,
-  .btn-follow,
-  .btn-download,
-  .theme-toggle,
-  .contribution-graph {
-    display: none !important;
-  }
+    .jach {
+      list-style: none;
+      margin-bottom: .6rem
+    }
 
-  /* Desactivar sticky para imprimir todo el sidebar */
-  .sidebar {
-    position: static !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
+    .jach li {
+      color: var(--t2);
+      font-size: .83rem;
+      padding: 2px 0 2px 1.1rem;
+      position: relative
+    }
 
-  /* Reorganizar a una columna para mejor impresión */
-  .container {
-    display: block !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
+    .jach li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--a1)
+    }
 
-  .sidebar {
-    width: 100% !important;
-    padding-right: 0 !important;
-    margin-bottom: 16px !important;
-    border-bottom: 1px solid #30363d !important;
-    padding-bottom: 16px !important;
-    display: flex !important;
-    gap: 20px !important;
-    align-items: flex-start !important;
-    flex-wrap: wrap !important;
-  }
+    .jtechs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem
+    }
 
-  .avatar {
-    max-width: 120px !important;
-    flex-shrink: 0 !important;
-    margin: 0 !important;
-  }
+    .tt {
+      font-size: .73rem;
+      color: var(--a3);
+      background: rgba(16, 185, 129, .1);
+      border: 1px solid rgba(16, 185, 129, .3);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-family: 'Courier New', monospace
+    }
 
-  .name, .username, .bio {
-    flex-basis: 100% !important;
-  }
+    .edu-g {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.4rem
+    }
 
-  .stats-list {
-    flex-basis: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 2px 20px !important;
-  }
+    .edu-ico {
+      font-size: 2rem;
+      margin-bottom: .8rem
+    }
 
-  /* === Estilos para impresión / PDF === */
+    .edu-d {
+      font-size: .97rem;
+      font-weight: 700;
+      margin-bottom: .2rem
+    }
+
+    .edu-i {
+      color: var(--a1);
+      font-size: .82rem;
+      margin-bottom: .4rem
+    }
+
+    .edu-p {
+      color: var(--t2);
+      font-size: .78rem;
+      font-family: 'Courier New', monospace
+    }
+
+    .edu-det {
+      margin-top: .65rem;
+      color: var(--t2);
+      font-size: .83rem;
+      line-height: 1.6
+    }
+
+    .proj-g {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.4rem
+    }
+
+    .proj-h {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: .65rem
+    }
+
+    .proj-n {
+      font-size: 1rem;
+      font-weight: 700
+    }
+
+    .proj-type {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--a3);
+      background: rgba(16, 185, 129, .1);
+      padding: 2px 8px;
+      border-radius: 4px
+    }
+
+    .proj-d {
+      color: var(--t2);
+      font-size: .84rem;
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: .8rem
+    }
+
+    .plinks {
+      display: flex;
+      gap: .75rem;
+      margin-top: auto
+    }
+
+    .plink {
+      font-size: .8rem;
+      color: var(--a1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color var(--trans)
+    }
+
+    .plink:hover {
+      color: var(--a2)
+    }
+
+    .ct-g {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start
+    }
+
+    .ct-list {
+      display: flex;
+      flex-direction: column;
+      gap: .9rem
+    }
+
+    .ct-item {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      padding: .9rem 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      transition: all var(--trans)
+    }
+
+    .ct-item:hover {
+      border-color: var(--a1);
+      transform: translateX(5px)
+    }
+
+    .ct-ico {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--a1), var(--a2));
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0
+    }
+
+    .ct-lbl {
+      font-size: .7rem;
+      color: var(--t2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 2px
+    }
+
+    .ct-val {
+      font-size: .88rem;
+      font-weight: 600
+    }
+
+    #notif {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg2);
+      border: 1px solid var(--a1);
+      border-radius: var(--r);
+      padding: .9rem 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      font-size: .88rem;
+      z-index: 9999;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all var(--trans);
+      max-width: 280px;
+      box-shadow: var(--glow)
+    }
+
+    #notif.show {
+      transform: translateY(0);
+      opacity: 1
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--t2);
+      font-size: .8rem;
+      font-family: 'Courier New', monospace;
+      position: relative;
+      z-index: 1
+    }
+
+    /* ══ MOBILE FIRST (< 480px) ══ */
+    @media(max-width:480px) {
+      html { font-size: 14px }
+
+      section { padding: 40px 1rem }
+
+      nav { height: 50px; padding: 0 1rem }
+
+      .logo { font-size: 0.9rem }
+
+      .hero-w { grid-template-columns: 1fr; text-align: center }
+      .avatar-wrap { margin: 0 auto; width: 120px; height: 120px; order: -1 }
+      .aring { width: 130px; height: 130px }
+      .aring2 { width: 150px; height: 150px }
+
+      .hname { font-size: 1.8rem; margin: 1rem 0 }
+      .hrole { font-size: 0.9rem }
+      .hdesc { font-size: 0.85rem; margin: 0 auto 1.5rem }
+
+      .hcta { flex-direction: column; gap: 0.5rem; justify-content: center }
+      .hcta a { padding: 0.6rem 1rem; font-size: 0.85rem }
+
+      .hstats { gap: 0.8rem; justify-content: center; flex-wrap: wrap }
+
+      .about-g, .ct-g, .proj-g, .sk-grid { grid-template-columns: 1fr }
+
+      .sh { font-size: 1.3rem }
+      .sh::after { height: 2px }
+
+      .nav-ul { display: none; position: absolute; top: 50px; left: 0; right: 0; background: var(--bg1); border-bottom: 1px solid var(--border); flex-direction: column; padding: 1rem 1rem; gap: 0.7rem; z-index: 100 }
+      .nav-ul.open { display: flex }
+      .nav-ul li a { font-size: 0.95rem }
+
+      .hbg { display: flex }
+
+      .dlbtn { padding: 0.6rem 1rem; font-size: 0.85rem }
+      .dlbtn .txt { display: none }
+      .tbtn { width: 36px; height: 36px; font-size: 1.2rem }
+
+      .card { padding: 1rem }
+      .entry { flex-direction: column }
+      .entry__period { margin-top: 0.5rem }
+
+      .jp { font-size: 0.85rem; padding: 3px 12px }
+
+      .tl { padding-left: 0 }
+      .tl::before { display: none }
+      .tldot { display: none }
+
+      .skill-bar-item { margin-bottom: 0.8rem }
+
+      .badge { padding: 0.4rem 0.8rem; font-size: 0.75rem }
+    }
+
+    /* ══ TABLET (480px - 768px) ══ */
+    @media(min-width:481px) and (max-width:768px) {
+      html { font-size: 15px }
+
+      section { padding: 60px 1.5rem }
+
+      .hero-w { grid-template-columns: 1fr; text-align: center }
+      .avatar-wrap { margin: 0 auto; width: 150px; height: 150px }
+      .aring { width: 160px; height: 160px }
+      .aring2 { width: 180px; height: 180px }
+
+      .hname { font-size: 2.2rem }
+      .hdesc { margin: 0 auto 2rem }
+
+      .hcta { justify-content: center }
+      .hstats { justify-content: center }
+
+      .about-g, .ct-g { grid-template-columns: 1fr }
+
+      .sk-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) }
+
+      .nav-ul { display: none; position: absolute; top: 60px; left: 0; right: 0; background: var(--bg1); border-bottom: 1px solid var(--border); flex-direction: column; padding: 1rem 1.5rem; gap: 0.9rem }
+      .nav-ul.open { display: flex }
+
+      .hbg { display: flex }
+
+      .dlbtn .txt { display: none }
+    }
+
+    /* ══ DESKTOP (≥ 769px) ══ */
+    @media(min-width:769px) {
+      .hbg { display: none }
+
+      .nav-ul { display: flex !important }
+
+      .dlbtn .txt { display: inline }
+    }
+
+    @media print {
+      * {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact
+      }
+
+      nav,
+      #prog,
+      #pts,
+      #rain,
+      #notif,
+      .tbtn,
+      .dlbtn,
+      .hbg {
+        display: none !important
+      }
+
+      main {
+        padding-top: 0
+      }
+
+      body {
+        background: var(--bg0);
+        color: var(--t1)
+      }
+
+      section {
+        padding: 30px 1.5rem
+      }
+
+      #hero {
+        min-height: auto;
+        padding: 30px 1.5rem
+      }
+
+      .card:hover {
+        transform: none;
+        box-shadow: none
+      }
+
+      .fi,
+      .fi-l,
+      .tli {
+        opacity: 1 !important;
+        transform: none !important
+      }
+
+      .sbf {
+        transition: none !important
+      }
+
+      nav, #prog { display: none !important; }
+      body { background: white !important; color: #111 !important; }
+      .card { box-shadow: none !important; border: 1px solid #ccc !important; }
+      main { padding-top: 0 !important; }
+    }
+
   </style>
 </head>
 
 <body>
-  <header class="header">
-    <span class="header-logo">⚙</span>
-    <input class="search" placeholder="Type / to search">
-    <div class="header-actions">
-      <span>Pull requests</span>
-      <span>Issues</span>
-      <span>🔔</span>
-      <span>+</span>
-      <button id="themeToggle" class="theme-toggle">🌙</button>
+
+  <canvas id="rain"></canvas>
+  <div id="pts"></div>
+  <div id="prog"></div>
+  <div id="notif"><span id="n-ico">✅</span><span id="n-txt">Listo</span></div>
+
+  <nav>
+    <div class="logo" id="nav-logo" style="cursor: pointer;" onclick="document.getElementById('hero').scrollIntoView({ behavior: 'smooth' })"></div>
+    <ul class="nav-ul" id="nav-ul"></ul>
+    <div class="nav-r">
+      <button class="tbtn" id="tbtn" title="Cambiar tema">🌙</button>
+      <button class="dlbtn" id="dlbtn" onclick="downloadPDF()">⬇ <span class="txt">Descargar PDF</span></button>
+      <button class="hbg" id="hbg" aria-label="Menú"><span></span><span></span><span></span></button>
     </div>
-  </header>
+  </nav>
 
-  <div class="container">
-
-    {# =================== SIDEBAR =================== #}
-    <aside class="sidebar">
-      <div class="avatar" data-iniciales="{{cv.personal_info.nombre|first }}{{cv.personal_info.apellidos|first}}">
-        {% if cv.personal_info.foto %}
-        <img src="{{cv.personal_info.foto}}" alt="{{cv.personal_info.nombre_completo}}">
-        {% else %}
-        {{ cv.personal_info.nombre|first }}{{ cv.personal_info.apellidos|first }}
-        {% endif %}
-      </div>
-
-      <div class="name">{{ cv.personal_info.nombre }} {{ cv.personal_info.apellidos }}</div>
-      <div class="username">{{ cv.personal_info.nombre|lower }}dev</div>
-
-      {% if cv.professional_profile.profesion %}
-      <p class="bio">{{ cv.professional_profile.profesion }}</p>
-      {% endif %}
-
-      <button class="btn-follow">Follow</button>
-      <button class="btn-download" id="btnPdf">⬇ Descargar CV en PDF</button>
-
-      <div class="stats-list">
-        <div class="stat-item">👥 <strong>1.2k</strong> fllwrs <strong>284</strong> following</div>
-        <div class="stat-item">⭐ <strong>523</strong> stars</div>
-
-        {% if cv.personal_info.nacionalidad %}
-        <div class="stat-item">🌍 {{ cv.personal_info.nacionalidad }}</div>
-        {% endif %}
-
-        <div class="stat-item">
-          📍 {{ cv.personal_info.ciudad }}, {{ cv.personal_info.pais }}
-          {% if cv.personal_info.codigo_postal %} · {{ cv.personal_info.codigo_postal }}{% endif %}
-        </div>
-
-        <div class="stat-item">📧 {{ cv.personal_info.email_profesional1 }}</div>
-        {% if cv.personal_info.email_profesional2 %}
-        <div class="stat-item">📧 {{ cv.personal_info.email_profesional2 }}</div>
-        {% endif %}
-
-        <div class="stat-item">📞 {{ cv.personal_info.telefono1 }}</div>
-        {% if cv.personal_info.telefono2 %}
-        <div class="stat-item">📱 {{ cv.personal_info.telefono2 }}</div>
-        {% endif %}
-
-        <div class="stat-item">🟢 <strong>{{ cv.personal_info.disponibilidad }}</strong></div>
-        <div class="stat-item">🚗 <strong>{{ cv.personal_info.carnet_conducir|yesno:"Sí,No" }}</strong></div>
-      </div>
-    </aside>
-
-    {# =================== MAIN =================== #}
-    <main class="main">
-
-      <div class="tabs">
-        <button class="tab active">📖 Overview</button>
-        <button class="tab">📚 Repositories <span class="count">{{ proyectos|length }}</span></button>
-        <button class="tab">📦 Projects <span class="count">{{ experiencias|length }}</span></button>
-        <button class="tab">📦 Packages</button>
-        <button class="tab">⭐ Stars <span class="count">523</span></button>
-      </div>
-
-      <div class="readme">
-        <div class="readme-header">📄 {{ cv.personal_info.nombre|lower }}dev / README.md</div>
-        <div class="readme-body">
-
-          <h1>👋 Hola, soy {{ cv.personal_info.nombre }}</h1>
-
-          {# Badges con las primeras 5 habilidades técnicas #}
-          <div class="badges">
-            {% for s in habilidades|slice:":5" %}
-            {% if s.tipo == 'Tecnica' %}
-            <span class="badge {% cycle '' 'purple' 'green' 'orange' 'red' %}">{{ s.nombre }}</span>
-            {% endif %}
-            {% endfor %}
-          </div>
-
-          {# Resumen #}
-          {% if cv.professional_profile.resumen %}
-          <p>{{ cv.professional_profile.resumen|linebreaksbr }}</p>
-          {% endif %}
-
-          {# Objetivo #}
-          {% if cv.professional_profile.objetivo %}
-          <h2>🎯 Objetivo profesional</h2>
-          <p>{{ cv.professional_profile.objetivo }}</p>
-          {% endif %}
-
-          {# Habilidades #}
-          {% if habilidades %}
-          <h2>⚡ Habilidades</h2>
-
-          <h3>Habilidades técnicas</h3>
-          {% for s in habilidades %}
-          {% if s.tipo == 'Tecnica' %}
-          <div class="skill-bar-item">
-            <div class="skill-bar-item__name">
-              <span>{{ s.nombre }}{% if s.categoria %} <small style="color:var(--text-muted);">·
-                  {{s.categoria}}</small>{% endif %}</span>
-              {% if s.nivel %}<span class="skill-bar-item__pct">{% widthratio s.nivel 5 100 %}%</span>{% endif %}
-            </div>
-            {% if s.nivel %}
-            <div class="skill-bar">
-              <div class="skill-bar__fill" style="width:{% widthratio s.nivel 5 100 %}%"></div>
-            </div>
-            {% endif %}
-          </div>
-          {% endif %}
-          {% endfor %}
-
-          <h3>Soft skills</h3>
-          <div class="badges">
-            {% for s in habilidades %}
-            {% if s.tipo == 'SoftSkill' %}
-            <span class="badge {% cycle '' 'purple' 'green' 'orange' 'red' %}">{{ s.nombre }}</span>
-            {% endif %}
-            {% endfor %}
-          </div>
-          {% endif %}
-
-          {# Experiencia laboral #}
-          {% if experiencias %}
-          <h2>💼 Experiencia laboral</h2>
-          {% for exp in experiencias %}
-          <h3>{{ exp.puesto }} @ {{ exp.empresa }}{% if exp.ubicacion %} · {{ exp.ubicacion }}{% endif %}</h3>
-          <p>
-            <code>
-                  {{ exp.fecha_inicio|slice:":4" }} —
-                  {% if exp.trabajo_actual %}Presente{% else %}{{ exp.fecha_fin|slice:":4" }}{% endif %}
-                </code>
-          </p>
-          {% if exp.descripcion %}
-          <p>{{ exp.descripcion|linebreaksbr }}</p>
-          {% endif %}
-          {% if exp.logros %}
-          <ul>
-            {% for logro in exp.logros.splitlines %}
-            {% if logro %}<li>{{ logro }}</li>{% endif %}
-            {% endfor %}
-          </ul>
-          {% endif %}
-          {% endfor %}
-          {% endif %}
-
-          {# Educación + Formación complementaria #}
-          {% if educaciones or formaciones %}
-          <h2>🎓 Educación</h2>
-
-          {% for edu in educaciones %}
-          <h3>{{ edu.titulo }}</h3>
-          <p>
-            {{ edu.centro }}{% if edu.ubicacion %} · {{ edu.ubicacion }}{% endif %} —
-            <code>
-                  {{ edu.fecha_inicio|slice:":4" }} —
-                  {% if edu.en_curso %}En curso{% else %}{{ edu.fecha_fin|slice:":4" }}{% endif %}
-                </code>
-          </p>
-          {% endfor %}
-
-          {% if formaciones %}
-          <h3 class="subsection">📚 Formación complementaria</h3>
-          <ul>
-            {% for f in formaciones %}
-            <li>
-              <strong>{{ f.tipo }}:</strong> {{ f.nombre }}
-              {% if f.entidad %} — {{ f.entidad }}{% endif %}
-              {% if f.fecha %} ({{ f.fecha|slice:":4" }}){% endif %}
-            </li>
-            {% endfor %}
-          </ul>
-          {% endif %}
-          {% endif %}
-
-          {# Proyectos (Pinned) #}
-          {% if proyectos %}
-          <h2 style="font-size:16px; margin-bottom:8px;">📌 Pinned</h2>
-          <div class="repo-grid">
-            {% for proj in proyectos %}
-            <div class="repo">
-              {% if proj.link %}
-              <a href="{{ proj.link }}" target="_blank" rel="noopener" class="repo-name">📚 {{ proj.nombre }}</a>
-              {% else %}
-              <div class="repo-name">📚 {{ proj.nombre }}</div>
-              {% endif %}
-
-              {% if proj.descripcion %}
-              <div class="repo-desc">{{ proj.descripcion|truncatechars:120 }}</div>
-              {% endif %}
-
-              {% if proj.tecnologias %}
-              <div class="repo-meta">
-                <span><span class="lang-dot" style="background:#58a6ff;"></span>{{ proj.tecnologias }}</span>
-              </div>
-              {% endif %}
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %}
-
-          {# Logros #}
-          {% if logros %}
-          <h2 style="font-size:16px; margin-bottom:8px;">🏆 Logros y reconocimientos</h2>
-          <div class="repo-grid">
-            {% for logro in logros %}
-            <div class="repo">
-              <div class="repo-name">
-                {% if logro.tipo == 'Premio' %}🏆
-                {% elif logro.tipo == 'Reconocimiento' %}🎖
-                {% elif logro.tipo == 'Conferencia' %}🎤
-                {% elif logro.tipo == 'Impacto' %}⚡
-                {% else %}⭐{% endif %}
-                {{ logro.titulo }}
-              </div>
-              {% if logro.descripcion %}
-              <div class="repo-desc">{{ logro.descripcion }}</div>
-              {% endif %}
-              <div class="repo-meta">
-                <span>{{ logro.tipo }}{% if logro.fecha %} · {{ logro.fecha|slice:":4" }}{% endif %}</span>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %}
-
-          {# Voluntariados #}
-          {% if voluntariados %}
-          <h2>🤝 Voluntariado</h2>
-          {% for v in voluntariados %}
-          <h3>{{ v.funcion }} @ {{ v.organizacion }}</h3>
-          <p>
-            <code>
-                  {{ v.fecha_inicio|slice:":4" }} —
-                  {% if v.en_curso %}Presente{% else %}{{ v.fecha_fin|slice:":4" }}{% endif %}
-                </code>
-          </p>
-          {% if v.impacto %}<p>{{ v.impacto }}</p>{% endif %}
-          {% endfor %}
-          {% endif %}
-
-          {# Bloque final: idiomas + redes + intereses #}
-          {% if idiomas or cv.social_network or intereses %}
-          <h2>📎 Más información</h2>
-          <div class="repo-grid extras-grid">
-
-            {# Idiomas #}
-            {% if idiomas %}
-            <div class="repo">
-              <div class="repo-name">🌍 Idiomas</div>
-              <div class="extras-list">
-                {% for lang in idiomas %}
-                <div class="extras-item">
-                  <span class="extras-item__label">{{ lang.idioma }}</span>
-                  <span class="extras-item__value">
-                    {{ lang.nivel }}{% if lang.certificacion and lang.certificacion != 'N/A' %} ·
-                    {{lang.certificacion}}{% endif %}
-                  </span>
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-            {% endif %}
-
-            {# Redes sociales #}
-            {% if cv.social_network %}
-            <div class="repo">
-              <div class="repo-name">🔗 Encuéntrame</div>
-              <div class="extras-list">
-                {% if cv.social_network.linkedin %}
-                <div class="extras-item">
-                  <span class="extras-item__label">in LinkedIn</span>
-                  <a href="{{ cv.social_network.linkedin }}" target="_blank" rel="noopener" class="extras-link">Ver
-                    perfil ↗</a>
-                </div>
-                {% endif %}
-                {% if cv.social_network.github %}
-                <div class="extras-item">
-                  <span class="extras-item__label">🐙 GitHub</span>
-                  <a href="{{ cv.social_network.github }}" target="_blank" rel="noopener" class="extras-link">Ver perfil
-                    ↗</a>
-                </div>
-                {% endif %}
-                {% if cv.social_network.portfolio %}
-                <div class="extras-item">
-                  <span class="extras-item__label">🌐 Portfolio</span>
-                  <a href="{{ cv.social_network.portfolio }}" target="_blank" rel="noopener" class="extras-link">Visitar
-                    ↗</a>
-                </div>
-                {% endif %}
-                {% if cv.social_network.twitter %}
-                <div class="extras-item">
-                  <span class="extras-item__label">🐦 Twitter/X</span>
-                  <a href="{{ cv.social_network.twitter }}" target="_blank" rel="noopener" class="extras-link">Ver
-                    perfil ↗</a>
-                </div>
-                {% endif %}
-              </div>
-            </div>
-            {% endif %}
-
-            {# Intereses #}
-            {% if intereses %}
-            <div class="repo">
-              <div class="repo-name">🎯 Intereses</div>
-              <div class="badges" style="margin-top:8px;">
-                {% for interes in intereses %}
-                <span class="badge {% cycle '' 'purple' 'green' 'orange' 'red' %}">{{ interes.nombre }}</span>
-                {% endfor %}
-              </div>
-            </div>
-            {% endif %}
-
-          </div>
-          {% endif %}
-
-          {# Stats dinámico #}
-          <h2>📊 Stats</h2>
-          <pre>const {{ cv.personal_info.nombre|lower|default:"dev" }} = {
-  proyectos:    {{ proyectos|length }},
-  experiencias: {{ experiencias|length }},
-  estudios:     {{ educaciones|length }},
-  habilidades:  {{ habilidades|length }},
-  idiomas:      {{ idiomas|length }},
-  perfil:       "{{ cv.professional_profile.profesion|default:'developer' }}"
-};</pre>
-
+  <main id="main-content">
+    <section id="hero">
+      <div class="hero-w">
+        <div class="hero-l" id="inject-hero"></div>
+        <div class="avatar-wrap">
+          <div class="aring"></div>
+          <div class="aring aring2"></div>
+          <div class="avar" id="inject-avatar"></div>
         </div>
       </div>
+    </section>
+    <section id="about" style="display:none">
+      <h2 class="sh fi"><span class="ico">🧑</span>Sobre Mí</h2>
+      <div class="sdiv fi"></div>
+      <div class="about-g fi" id="inject-about"></div>
+    </section>
+    <section id="skills" style="display:none">
+      <h2 class="sh fi"><span class="ico">⚡</span>Habilidades</h2>
+      <div class="sdiv fi"></div>
+      <div class="sk-grid fi" id="inject-skills"></div>
+    </section>
+    <section id="education" style="display:none">
+      <h2 class="sh fi"><span class="ico">🎓</span>Educación</h2>
+      <div class="sdiv fi"></div>
+      <div class="edu-g fi" id="inject-education"></div>
+      <div id="inject-training" style="margin-top: 2rem;"></div>
+    </section>
+    <section id="languages" style="display:none">
+      <h2 class="sh fi"><span class="ico">🌍</span>Idiomas</h2>
+      <div class="sdiv fi"></div>
+      <div class="proj-g fi" id="inject-languages"></div>
+    </section>
+    <section id="experience" style="display:none">
+      <h2 class="sh fi"><span class="ico">💼</span>Experiencia</h2>
+      <div class="sdiv fi"></div>
+      <div class="tl fi" id="inject-experience"></div>
+    </section>
+    <section id="projects" style="display:none">
+      <h2 class="sh fi"><span class="ico">🚀</span>Proyectos</h2>
+      <div class="sdiv fi"></div>
+      <div class="proj-g fi" id="inject-projects"></div>
+    </section>
+    <section id="achievements" style="display:none">
+      <h2 class="sh fi"><span class="ico">🏆</span>Logros y Reconocimientos</h2>
+      <div class="sdiv fi"></div>
+      <div class="proj-g fi" id="inject-achievements"></div>
+    </section>
+    <section id="volunteering" style="display:none">
+      <h2 class="sh fi"><span class="ico">🤝</span>Voluntariado</h2>
+      <div class="sdiv fi"></div>
+      <div class="proj-g fi" id="inject-volunteering"></div>
+    </section>
+    <section id="interests" style="display:none">
+      <h2 class="sh fi"><span class="ico">❤️</span>Intereses</h2>
+      <div class="sdiv fi"></div>
+      <div class="proj-g fi" id="inject-interests"></div>
+    </section>
+    <section id="contact" style="display:none">
+      <h2 class="sh fi"><span class="ico">📬</span>Contacto</h2>
+      <div class="sdiv fi"></div>
+      <div class="ct-g fi" id="inject-contact"></div>
+    </section>
+  </main>
 
-      {# Other Info #}
-      {% if other_info %}
-      <div class="repo" style="margin-top:16px;">
-        <div class="repo-name" style="margin-bottom:12px;">📋 Datos adicionales</div>
-        <div class="repo-meta" style="flex-wrap:wrap; gap:24px;">
-          <span>🏠 Teletrabajo: <strong style="color:var(--text);">{{ other_info.teletrabajo }}</strong></span>
-          <span>✈ Viajes: <strong
-              style="color:var(--text);">{{other_info.disponibilidad_viajar|yesno:"Sí,No"}}</strong></span>
-          {% if other_info.expectativa_salarial %}
-          <span>💰 Salario: <strong style="color:var(--text);">{{ other_info.expectativa_salarial }}</strong></span>
-          {% endif %}
-          {% if other_info.notas %}
-          <span>📝 {{ other_info.notas }}</span>
-          {% endif %}
-        </div>
-      </div>
-      {% endif %}
-
-      {# Contribution graph #}
-      <div class="contribution-graph">
-        <h3 style="font-size:14px; margin-bottom:12px; font-weight:400; color:var(--text-muted);">2,847 contributions in
-          the last year</h3>
-        <div class="contribution-grid" id="contribGrid"></div>
-      </div>
-
-    </main>
-  </div>
+  <footer id="inject-footer"></footer>
 
   <script>
-    // Toggle de tema
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      const esClaro = document.body.classList.contains('light');
-      themeToggle.textContent = esClaro ? '☀' : '🌙';
-    });
+    /* ══════════════════════════════════════════════════
+       CV DATA — todo el contenido editable aquí
+    ══════════════════════════════════════════════════ */
+    const CV_DATA = {
 
-    // Fallback de imagen rota: mostrar iniciales si falla la URL
-    document.querySelectorAll('.avatar img').forEach(img => {
-      img.addEventListener('error', () => {
-        const avatar = img.parentElement;
-        // Saca iniciales del alt: "Maria Perez Lopez" → "MP"
-        const iniciales = img.alt.split(' ').slice(0, 2).map(w => w[0]).join('');
-        avatar.innerHTML = iniciales;
-      });
-    });
+      /* Secciones visibles: cambiar a false para ocultar */
+      sections: {
+        about: true, skills: true, education: true, languages: true, experience: true,
+        projects: true, achievements: true, volunteering: true, interests: true, contact: true
+      },
 
-    
+      /* Datos personales */
+      meta: {
+        name: "{{ cv.personal_info.nombre }} {{ cv.personal_info.apellidos }}",
+        initials: "{{ cv.personal_info.nombre|first }}{{ cv.personal_info.apellidos|first }}",
+        avatar: "{{ cv.personal_info.foto }}",
+        email: "{{ cv.personal_info.email_profesional1 }}",
+        phone: "{{ cv.personal_info.telefono1 }}",
+        linkedin: "{{ cv.social_network.linkedin|default:'' }}",
+        github: "{{ cv.social_network.github|default:'' }}",
+        portfolio: "{{ cv.social_network.portfolio|default:'' }}",
+        location: "{{ cv.personal_info.ciudad }}, {{ cv.personal_info.pais }}",
+        pdfFile: "CV-{{ cv.personal_info.nombre }}-{{ cv.personal_info.apellidos }}.pdf"
+      },
 
-    const btnPdf = document.getElementById('btnPdf');
-    if (btnPdf) {
-      btnPdf.addEventListener('click', () => {
-        window.print();
+      /* Hero */
+      hero: {
+        tagline: "{{ cv.personal_info.disponibilidad|default:'Disponible' }} · Open to Work",
+        roles: [
+          "{{ cv.professional_profile.profesion|default:'Developer' }}"
+          {% for x in habilidades|slice:":3" %}
+          {% if x.tipo == 'Tecnica' %},
+          "{{ x.nombre }}"
+          {% endif %}
+          {% endfor %}
+        ],
+    description: "{{ cv.professional_profile.resumen|escapejs }}",
+      stats: [
+        { n: 0, suf: '', label: 'Experiencias' },
+        { n: 0, suf: '', label: 'Proyectos' },
+        { n: 0, suf: '', label: 'Skills' },
+        { n: 0, suf: '', label: 'Idiomas' }
+      ]
+      },
+
+    /* Sobre mí */
+    about: {
+      paragraphs: [
+        'Soy un <span class="hl">Full Stack Developer</span> especializado en el ecosistema JavaScript/TypeScript y cloud computing. Me apasiona crear soluciones que combinen rendimiento, seguridad y experiencia de usuario excepcional.',
+        'Con experiencia en <span class="hl">startups y corporaciones</span>, he liderado equipos, diseñado arquitecturas distribuidas y optimizado sistemas críticos procesando millones de eventos diarios.',
+        'Actualmente profundizando en <span class="hl">IA/ML aplicada</span> al desarrollo de software y arquitecturas serverless en AWS y GCP.'
+      ],
+        badges: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Docker', 'Kubernetes', 'AWS', 'PostgreSQL', 'MongoDB', 'GraphQL', 'Redis'],
+          info: [
+            { ico: '✉', label: 'Email', val: '{{ cv.personal_info.email_profesional1 }}' },
+            { ico: '💼', label: 'LinkedIn', val: '{{ cv.social_network.linkedin|default:"" }}' },
+            { ico: '🐙', label: 'GitHub', val: '{{ cv.social_network.github|default:"" }}' },
+            { ico: '🌐', label: 'Portfolio', val: '{{ cv.social_network.portfolio|default:"" }}' },
+            { ico: '📞', label: 'Teléfono', val: '{{ cv.personal_info.telefono1 }}' }
+          ]
+    },
+
+    /* Habilidades */
+    skills: [
+      {
+        cat: 'Habilidades técnicas',
+        items: [
+          {% for skill in habilidades %}
+          { name: '{{ skill.nombre|escapejs }}', pct: {{ skill.nivel|default:50 }} }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+      }
+    ],
+
+    /* Idiomas */
+    languages: [
+      {% for lang in idiomas %}
+      { ico: '🌐', name: '{{ lang.idioma|escapejs }}', level: '{{ lang.nivel|escapejs }}', cert: '{{ lang.certificacion|escapejs }}' }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+
+    /* Formación Complementaria */
+    training: [
+      {% for form in formaciones %}
+      { ico: '📚', type: '{{ form.tipo|default:""|escapejs }}', name: '{{ form.nombre|default:""|escapejs }}', entity: '{{ form.entidad|default:""|escapejs }}', desc: '{{ form.descripcion|default:""| escapejs }}', date: '{{ form.fecha|default:""| date:"Y" }}' }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+
+      /* Experiencia */
+      experience: [
+        {% for exp in experiencias %}
+        {
+          title: '{{ exp.puesto|escapejs }}', period: '{% if exp.trabajo_actual %}Trabaja actualmente{% else %}{{ exp.fecha_inicio|date:"b Y" }} - {{ exp.fecha_fin|date:"b d" }}{% endif %}',
+          company: '{{ exp.empresa|escapejs }}{% if exp.ubicacion %} · {{ exp.ubicacion|escapejs }}{% endif %}',
+          desc: '{{ exp.descripcion|default:""| escapejs }}',
+          bullets: [
+            '{{ exp.descripcion|default:""|escapejs }}'
+          ],
+          techs: []
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ],
+
+        /* Educación */
+        education: [
+          {% for edu in educaciones %}
+          {
+            ico: '🎓',
+            degree: '{{ edu.titulo|escapejs }}',
+            institution: '{{ edu.centro|escapejs }}',
+            location: '{{ edu.ubicacion|escapejs }}',
+            period: '{% if edu.en_curso %}En curso{% else %}{{ edu.fecha_inicio|date:"b Y" }} - {{ edu.fecha_fin|date:"b Y" }}{% endif %}',
+            en_curso: {{ edu.en_curso|lower }}
+          }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+
+          /* Proyectos */
+          projects: [
+            {% for proj in proyectos %}
+            { ico: '🎯', name: '{{ proj.nombre|escapejs }}', type: '{{ proj.nombre|truncatewords:1|escapejs }}', desc: '{{ proj.descripcion|default:""| escapejs }}', techs: [], links: [{% if proj.link %}{ label: '🔗 Ver', href: '{{ proj.link|escapejs }}' }{% endif %}] }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ],
+
+          /* Logros y Reconocimientos */
+          achievements: [
+            {% for logro in logros %}
+            { ico: '🏆', title: '{{ logro.titulo|escapejs }}', type: '{{ logro.tipo|escapejs }}', desc: '{{ logro.descripcion|default:""| escapejs }}', date: '{{ logro.fecha|date:"b Y" }}' }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ],
+
+          /* Voluntariado */
+          volunteering: [
+            {% for vol in voluntariados %}
+            { ico: '🤝', org: '{{ vol.organizacion|escapejs }}', role: '{{ vol.funcion|escapejs }}', impact: '{{ vol.impacto|default:""| escapejs }}', current: {{ vol.en_curso|lower }}, period: '{% if vol.en_curso %}En curso{% else %}{{ vol.fecha_inicio|date:"b Y" }} - {{ vol.fecha_fin|date:"b Y" }}{% endif %}' }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ],
+
+          /* Intereses */
+          interests: [
+            {% for interes in intereses %}
+            '{{ interes.nombre|escapejs }}'{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ],
+
+            /* Contacto */
+            contact: {
+      items: [
+        {% if cv.personal_info.email_profesional1 %}{ ico: '✉', label: 'Email', val: '{{ cv.personal_info.email_profesional1 }}' },{% endif %}
+        {% if cv.personal_info.telefono1 %}{ ico: '📞', label: 'Teléfono', val: '{{ cv.personal_info.telefono1 }}' },{% endif %}
+        {% if cv.social_network.linkedin %}{ ico: '💼', label: 'LinkedIn', val: '{{ cv.social_network.linkedin }}' },{% endif %}
+        {% if cv.social_network.github %}{ ico: '🐙', label: 'GitHub', val: '{{ cv.social_network.github }}' }{% endif %}
+      ],
+        cta: {
+        title: '¿Tienes un proyecto en mente?',
+          desc: '{{ cv.professional_profile.objetivo|default:"Estoy abierto a nuevas oportunidades y colaboraciones." |escapejs }}',
+            badges: ['💼 Disponible', '{{ cv.personal_info.disponibilidad|default:"Remoto" }}']
+      }
+    }
+    };
+
+    // Procesar stats: usar datos reales si existen, números aleatorios si no
+    const exp_count = parseInt('{{ experiencias|length }}') || 0;
+    const proj_count = parseInt('{{ proyectos|length }}') || 0;
+    const skill_count = parseInt('{{ habilidades|length }}') || 0;
+    const lang_count = parseInt('{{ idiomas|length }}') || 0;
+
+    console.log('Stats debug:', { exp_count, proj_count, skill_count, lang_count });
+
+    CV_DATA.hero.stats[0].n = exp_count || Math.floor(Math.random() * 15) + 5;
+    CV_DATA.hero.stats[1].n = proj_count || Math.floor(Math.random() * 20) + 8;
+    CV_DATA.hero.stats[2].n = skill_count || Math.floor(Math.random() * 25) + 10;
+    CV_DATA.hero.stats[3].n = lang_count || Math.floor(Math.random() * 8) + 3;
+
+    /* ══════════════════════════════════════════════════
+       RENDER — construye el DOM desde CV_DATA
+    ══════════════════════════════════════════════════ */
+    function renderAll() {
+      const D = CV_DATA, M = D.meta;
+      document.title = `CV — ${M.name} | ${D.hero.roles[0]}`;
+      document.getElementById('nav-logo').innerHTML = `&lt;${M.initials} /&gt;`;
+      document.getElementById('inject-footer').innerHTML =
+        `&lt;/&gt; con ❤ por <span style="color:var(--a1)">${M.name}</span> &nbsp;·&nbsp; <span style="color:var(--a3)">Open to work 2024</span>`;
+      document.getElementById('inject-avatar').style.backgroundImage = `url('${M.avatar}')`;
+
+      const navLabels = { about: 'Sobre mí', skills: 'Skills', education: 'Educación', languages: 'Idiomas', experience: 'Experiencia', projects: 'Proyectos', achievements: 'Logros', volunteering: 'Voluntariado', interests: 'Intereses', contact: 'Contacto' };
+      document.getElementById('nav-ul').innerHTML = Object.entries(navLabels)
+        .filter(([k]) => D.sections[k])
+        .map(([k, v]) => `<li><a href="#${k}">${v}</a></li>`).join('');
+
+      renderHero();
+
+      const fns = {
+        about: renderAbout, skills: renderSkills, education: renderEducation, languages: renderLanguages, experience: renderExperience,
+        projects: renderProjects, achievements: renderAchievements, volunteering: renderVolunteering, interests: renderInterests, contact: renderContact
+      };
+      Object.entries(fns).forEach(([k, fn]) => {
+        const el = document.getElementById(k);
+        if (D.sections[k]) { el.style.display = ''; fn(); }
       });
     }
 
-    // Contribution graph
-    const grid = document.getElementById('contribGrid');
-    for (let i = 0; i < 371; i++) {
-      const day = document.createElement('div');
-      day.className = 'day';
-
-      const dayOfWeek = i % 7;
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-      let r = Math.random();
-      if (isWeekend) r *= 0.4;
-
-      if (r < 0.1) day.classList.add('');
-      else if (r < 0.3) day.classList.add('l1');
-      else if (r < 0.55) day.classList.add('l2');
-      else if (r < 0.8) day.classList.add('l3');
-      else day.classList.add('l4');
-
-      grid.appendChild(day);
+    function renderHero() {
+      const h = CV_DATA.hero, M = CV_DATA.meta;
+      document.getElementById('inject-hero').innerHTML = `
+    <div class="htag"><span class="dot-pulse"></span> ${h.tagline}</div>
+    <h1 class="hname"><span class="glitch" data-text="${M.name}">${M.name}</span></h1>
+    <div class="hrole"><span id="typed"></span><span class="cursor"></span></div>
+    <p class="hdesc">${h.description}</p>
+    <div class="hcta">
+      <a href="#contact" class="btn-p">Contactar ✉</a>
+      <a href="#projects" class="btn-o">Ver Proyectos →</a>
+    </div>
+    <div class="hstats">
+      ${h.stats.map(s => `<div><span class="stat-n" data-cnt="${s.n}" data-suf="${s.suf}">0</span><span class="stat-l">${s.label}</span></div>`).join('')}
+    </div>`;
     }
 
-    const filled = grid.querySelectorAll('.day.l1, .day.l2, .day.l3, .day.l4').length;
-    const total = Math.round(filled * (3 + Math.random() * 4));
-    document.querySelector('.contribution-graph h3').textContent = `${total.toLocaleString()} contributions in the last year`;
+    function renderAbout() {
+      const a = CV_DATA.about;
+      document.getElementById('inject-about').innerHTML = `
+    <div>
+      <div class="atext">${a.paragraphs.map(p => `<p>${p}</p>`).join('')}</div>
+      <div class="badges">${a.badges.map(b => `<span class="badge">${b}</span>`).join('')}</div>
+    </div>
+    <div class="ilist">
+      ${a.info.map(i => `<div class="iitem"><span class="iico">${i.ico}</span><div><span class="ilbl">${i.label}</span><span class="ival">${i.val}</span></div></div>`).join('')}
+    </div>`;
+    }
 
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+    function renderSkills() {
+      document.getElementById('inject-skills').innerHTML = CV_DATA.skills.map(cat => `
+    <div class="card">
+      <div class="sk-cat-t">${cat.cat}</div>
+      ${cat.items.map(s => `
+        <div class="sbc">
+          <div class="sbh"><span class="sbn">${s.name}</span><span class="sbp">${s.pct}%</span></div>
+          <div class="sb"><div class="sbf" data-pct="${s.pct}"></div></div>
+        </div>`).join('')}
+    </div>`).join('');
+    }
+
+    function renderLanguages() {
+      document.getElementById('inject-languages').innerHTML = CV_DATA.languages.map(l => `
+    <div class="card" style="display:flex;flex-direction:column">
+      <div class="proj-h"><span class="proj-n">${l.ico} ${l.name}</span><span class="proj-type">${l.level}</span></div>
+      <p style="color:var(--t2);font-size:0.85rem;margin:0">${l.cert}</p>
+    </div>`).join('');
+    }
+
+    function renderTraining() {
+      if (!CV_DATA.training || CV_DATA.training.length === 0) {
+        document.getElementById('inject-training').innerHTML = '';
+        return;
+      }
+      document.getElementById('inject-training').innerHTML = `
+    <h3 style="font-size:1.1rem;margin-bottom:1rem;color:var(--t1)">📚 Formación Complementaria</h3>
+    <div class="proj-g fi">
+      ${CV_DATA.training.map(t => `
+    <div class="card" style="display:flex;flex-direction:column">
+      <div class="proj-h"><span class="proj-n">${t.ico} ${t.name}</span><span class="proj-type">${t.type}</span></div>
+      <p style="color:var(--t2);font-size:0.85rem;margin:0 0 0.5rem 0;font-weight:600">${t.entity}</p>
+      <p class="proj-d">${t.desc}</p>
+      ${t.date ? `<div style="font-size:0.85rem;color:var(--t2)">📅 ${t.date}</div>` : ''}
+    </div>`).join('')}
+    </div>`;
+    }
+
+    function renderExperience() {
+      document.getElementById('inject-experience').innerHTML = CV_DATA.experience.map(e => `
+    <div class="tli card">
+      <div class="tldot"></div>
+      <div class="tlh"><span class="jt">${e.title}</span><span class="jp">${e.period}</span></div>
+      <div class="jc">${e.company}</div>
+      <p class="jd">${e.desc}</p>
+      <ul class="jach">${e.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      <div class="jtechs">${e.techs.map(t => `<span class="tt">${t}</span>`).join('')}</div>
+    </div>`).join('');
+    }
+
+    function renderEducation() {
+      document.getElementById('inject-education').innerHTML = CV_DATA.education.map(e => `
+    <div class="card">
+      <div class="tlh"><span class="jt">${e.ico} ${e.degree}</span><span class="jp">${e.period}</span></div>
+      <div class="jc">${e.institution}${e.location ? ' · ' + e.location : ''}</div>
+      <span class="proj-type" style="display:inline-block; margin-top:0.5rem">${e.en_curso ? 'En curso' : 'Finalizado'}</span>
+    </div>`).join('');
+      renderTraining();
+    }
+
+    function renderProjects() {
+      document.getElementById('inject-projects').innerHTML = CV_DATA.projects.map(p => `
+    <div class="card" style="display:flex;flex-direction:column">
+      <div class="proj-h"><span class="proj-n">${p.ico} ${p.name}</span><span class="proj-type">${p.type}</span></div>
+      <p class="proj-d">${p.desc}</p>
+      <div class="jtechs" style="margin-bottom:.75rem">${p.techs.map(t => `<span class="tt">${t}</span>`).join('')}</div>
+      <div class="plinks">${p.links.map(l => `<a href="${l.href}" class="plink">${l.label}</a>`).join('')}</div>
+    </div>`).join('');
+    }
+
+    function renderAchievements() {
+      document.getElementById('inject-achievements').innerHTML = CV_DATA.achievements.map(a => `
+    <div class="card" style="display:flex;flex-direction:column">
+      <div class="proj-h"><span class="proj-n">${a.ico} ${a.title}</span><span class="proj-type">${a.type}</span></div>
+      <p class="proj-d">${a.desc}</p>
+      ${a.date ? `<div style="font-size:0.85rem;color:var(--t2);margin-top:0.5rem">📅 ${a.date}</div>` : ''}
+    </div>`).join('');
+    }
+
+    function renderVolunteering() {
+      document.getElementById('inject-volunteering').innerHTML = CV_DATA.volunteering.map(v => `
+    <div class="card" style="display:flex;flex-direction:column">
+      <div class="proj-h"><span class="proj-n">${v.ico} ${v.role}</span><span class="proj-type">${v.current ? 'En curso' : 'Completado'}</span></div>
+      <p style="color:var(--t2);font-size:0.85rem;margin:0 0 0.25rem 0;font-weight:600">${v.org}</p>
+      ${v.period ? `<p style="color:var(--t2);font-size:0.8rem;margin:0 0 0.5rem 0">📅 ${v.period}</p>` : ''}
+      <p class="proj-d">${v.impact}</p>
+    </div>`).join('');
+    }
+
+    function renderInterests() {
+      document.getElementById('inject-interests').innerHTML = CV_DATA.interests.map(i => `
+    <div class="card" style="display:flex;align-items:center;justify-content:center;min-height:80px;text-align:center;padding:1rem">
+      <span style="font-size:1rem">${i}</span>
+    </div>`).join('');
+    }
+
+    function renderContact() {
+      const c = CV_DATA.contact;
+      document.getElementById('inject-contact').innerHTML = `
+    <div class="ct-list">
+      ${c.items.map(i => `
+        <div class="ct-item">
+          <div class="ct-ico">${i.ico}</div>
+          <div><span class="ct-lbl">${i.label}</span><span class="ct-val">${i.val}</span></div>
+        </div>`).join('')}
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:240px;gap:1rem">
+      <div style="font-size:3rem">💬</div>
+      <h3 style="font-size:1.15rem">${c.cta.title}</h3>
+      <p style="color:var(--t2);font-size:.88rem;line-height:1.65">${c.cta.desc}</p>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center">
+        ${c.cta.badges.map(b => `<span class="badge">${b}</span>`).join('')}
+      </div>
+    </div>`;
+    }
+
+    /* Renderizar todo al cargar */
+    renderAll();
+
+    /* ══ MATRIX RAIN ══ */
+    (() => {
+      const cv = document.getElementById('rain'), ctx = cv.getContext('2d');
+      const resize = () => { cv.width = innerWidth; cv.height = innerHeight };
+      resize(); addEventListener('resize', resize);
+      const chars = '01アイウエオカキクケコタチツテト∑∏√∞≠≈{}[]()<>#!/';
+      const fs = 14;
+      let cols = Math.floor(cv.width / fs), drops = Array(cols).fill(1);
+      setInterval(() => {
+        const dark = document.documentElement.dataset.theme !== 'light';
+        ctx.fillStyle = dark ? 'rgba(8,13,20,.05)' : 'rgba(240,244,248,.07)';
+        ctx.fillRect(0, 0, cv.width, cv.height);
+        ctx.fillStyle = dark ? '#00d4ff' : '#0077cc';
+        ctx.font = `${fs}px 'Courier New'`;
+        for (let i = 0; i < drops.length; i++) {
+          ctx.fillText(chars[Math.random() * chars.length | 0], i * fs, drops[i] * fs);
+          if (drops[i] * fs > cv.height && Math.random() > .975) drops[i] = 0;
+          drops[i]++;
+        }
+      }, 55);
+      addEventListener('resize', () => { cols = Math.floor(cv.width / fs); drops = Array(cols).fill(1) });
+    })();
+
+    /* ══ PARTICLES ══ */
+    (() => {
+      const c = document.getElementById('pts');
+      const mk = () => {
+        const p = document.createElement('div');
+        p.className = 'pt';
+        const sz = 1 + Math.random() * 3, dur = 9 + Math.random() * 11, dx = (Math.random() - .5) * 180;
+        p.style.cssText = `left:${Math.random() * 100}%;width:${sz}px;height:${sz}px;background:var(--a1);animation-duration:${dur}s;animation-delay:${Math.random() * 4}s;--dx:${dx}px`;
+        c.appendChild(p);
+        setTimeout(() => p.remove(), (dur + 4) * 1000);
+      };
+      for (let i = 0; i < 30; i++)mk();
+      setInterval(mk, 500);
+    })();
+
+    /* ══ TYPING EFFECT — usa CV_DATA.hero.roles ══ */
+    (() => {
+      const roles = CV_DATA.hero.roles;
+      let ri = 0, ci = 0, del = false;
+      const el = document.getElementById('typed');
+      const tick = () => {
+        const r = roles[ri];
+        if (!del) { el.textContent = r.slice(0, ++ci); if (ci === r.length) { del = true; setTimeout(tick, 2200); return } }
+        else { el.textContent = r.slice(0, --ci); if (ci === 0) { del = false; ri = (ri + 1) % roles.length } }
+        setTimeout(tick, del ? 55 : 100);
+      };
+      tick();
+    })();
+
+    /* ══ SCROLL PROGRESS ══ */
+    addEventListener('scroll', () => {
+      const pct = scrollY / (document.documentElement.scrollHeight - innerHeight) * 100;
+      document.getElementById('prog').style.width = pct + '%';
+    });
+
+    /* ══ INTERSECTION OBSERVER ══ */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('on');
+        e.target.querySelectorAll('.sbf').forEach(b => {
+          setTimeout(() => { b.style.width = b.dataset.pct + '%' }, 150);
+        });
+        e.target.querySelectorAll('[data-cnt]').forEach(el => {
+          const t = +el.dataset.cnt, suf = el.dataset.suf || '';
+          let v = 0; const step = t / 80;
+          const up = () => { v = Math.min(v + step, t); el.textContent = Math.floor(v) + suf; if (v < t) requestAnimationFrame(up) };
+          up();
+        });
+      });
+    }, { threshold: .12 });
+    document.querySelectorAll('.fi,.fi-l,.tli').forEach(el => io.observe(el));
+
+    /* ══ ACTIVE NAV ══ */
+    const navAs = document.querySelectorAll('.nav-ul a');
+    document.querySelectorAll('section[id]').forEach(s =>
+      new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting)
+          navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + s.id));
+      }, { threshold: .35 }).observe(s)
+    );
+
+    /* ══ THEME TOGGLE ══ */
+    let dark = true;
+    document.getElementById('tbtn').addEventListener('click', () => {
+      dark = !dark;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.getElementById('tbtn').textContent = dark ? '🌙' : '☀️';
+    });
+
+    /* ══ HAMBURGER ══ */
+    const hbg = document.getElementById('hbg'), navUl = document.getElementById('nav-ul');
+    hbg.addEventListener('click', () => { hbg.classList.toggle('open'); navUl.classList.toggle('open') });
+    document.querySelectorAll('.nav-ul a').forEach(a => a.addEventListener('click', () => { hbg.classList.remove('open'); navUl.classList.remove('open') }));
+
+    /* ══ CARD TILT ══ */
+    document.querySelectorAll('.card').forEach(c => {
+      c.addEventListener('mousemove', e => {
+        const r = c.getBoundingClientRect();
+        const rx = (e.clientY - r.top - r.height / 2) / 18;
+        const ry = (r.width / 2 - (e.clientX - r.left)) / 18;
+        c.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-5px)`;
+        c.style.transition = 'transform .08s ease';
+      });
+      c.addEventListener('mouseleave', () => { c.style.transform = ''; c.style.transition = 'all .4s ease' });
+    });
+
+    /* ══ SMOOTH SCROLL ══ */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
       });
     });
 
-    // Follow button
-    const followBtn = document.querySelector('.btn-follow');
-    let following = false;
-    followBtn.addEventListener('click', () => {
-      following = !following;
-      followBtn.textContent = following ? '✓ Following' : 'Follow';
-      followBtn.style.background = following ? '#238636' : '';
-    });
+    /* ══ NOTIFICATION ══ */
+    function notify(txt, ico = '✅') {
+      document.getElementById('n-txt').textContent = txt;
+      document.getElementById('n-ico').textContent = ico;
+      const n = document.getElementById('notif');
+      n.classList.add('show');
+      setTimeout(() => n.classList.remove('show'), 3200);
+    }
+
+    /* ══ PDF DOWNLOAD ══ */
+    function downloadPDF() {
+      window.print();
+    }
+
+    /* ══ DARK/LIGHT THEME TOGGLE ══ */
+    const tbtn = document.getElementById('tbtn');
+    const html = document.documentElement;
+
+    if (tbtn) {
+      // Cargar tema guardado al iniciar
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      html.dataset.theme = savedTheme;
+      tbtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+      // Toggle tema al hacer click
+      tbtn.addEventListener('click', () => {
+        const isDark = html.dataset.theme === 'dark';
+        html.dataset.theme = isDark ? 'light' : 'dark';
+        localStorage.setItem('theme', html.dataset.theme);
+        tbtn.textContent = isDark ? '☀️' : '🌙';
+      });
+    }
   </script>
+
 </body>
 
 </html>
